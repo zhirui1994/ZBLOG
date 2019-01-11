@@ -4,8 +4,7 @@ import { init } from '@rematch/core';
 import { Provider } from 'react-redux';
 import models from './models/index';
 import * as serviceWorker from './services/serviceWorker';
-import IndexPage from './pages/Index';
-import EditorPage from './pages/Editor';
+import App from './pages/App';
 import './styles/index.scss';
 
 export const store = init({
@@ -14,8 +13,7 @@ export const store = init({
 
 ReactDOM.render(
     <Provider store={store}>
-        <IndexPage />
-        {/* <EditorPage /> */}
+        <App />
     </Provider>,
     document.getElementById('root')
 );

@@ -21,6 +21,28 @@ export default {
                     result: response.result
                 });
             }
+        },
+        async getSingleIssue(number) {
+            const response = await githubServices.getSingleIssue(number)
+            if (response) {
+                await dispatch.entities.update(response.entities);
+                await dispatch.repository.update({
+                    result: response.result,
+                })
+            }
+        },
+        async closeCurrentIssue(_, rootState) {
+            const result = rootState.repository.result;
+            const currentRepository = rootState.entities.repositories[result];
+            if (currentRepository) {
+                currentRepository.issue = undefined;
+                const newEntities = {
+                    repositories: {
+                        [result]: currentRepository
+                    }
+                };
+                await dispatch.entities.update(newEntities);
+            }
         }
     })
 }

@@ -7,10 +7,11 @@ export default {
         issues: {},
         labels: {},
         milestones: {},
+        comments: {},
     },
     reducers: {
         update(state, payload) {
             return object.merge(state, payload)
-        }
+        },
     }
 }

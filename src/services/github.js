@@ -15,7 +15,6 @@ export async function initIndex() {
                             id,
                             name,
                             color,
-                            description,
                         } 
                     },
                     milestones(first:100) {
@@ -24,7 +23,6 @@ export async function initIndex() {
                             number,
                             state,
                             title,
-                            description,
                         }
                     },
                     issues(last:20, states:OPEN) {
@@ -38,6 +36,7 @@ export async function initIndex() {
                         nodes {
                             id,
                             title,
+                            number,
                             createdAt,
                             milestone {
                                 id
@@ -60,4 +59,56 @@ export async function initIndex() {
     ).then(response => {
         return normalize(response.data.data.repository, repository);
     });
+}
+
+export async function getSingleIssue(number) {
+    return axios.post(
+        'https://api.github.com/graphql',
+        {
+            query: `query { 
+                repository(owner: "${config.owner}", name: "${config.repo}") {
+                    id,
+                    issue(number: ${number}) {
+                        id,
+                        title,
+                        number,
+                        bodyHTML,
+                        createdAt,
+                        milestone {
+                            id,
+                            number,
+                            state,
+                            title,
+                        },
+                        labels(first:100) {
+                            nodes {
+                                id,
+                                name,
+                                color,
+                            }
+                        },
+                        comments(last: 20) {
+                            nodes {
+                                id,
+                                author {
+                                    avatarUrl,
+                                    login,
+                                    url,
+                                },
+                                bodyHTML,
+                                createdAt,
+                            }
+                        }
+                    }
+                }
+            }`
+        },
+        {
+            headers: {
+                Authorization: 'token a068f2626ecd32c5dc40fd871d6e47b34de4eec4'
+            },
+        }
+    ).then(response => {
+        return normalize(response.data.data.repository, repository);
+    })
 }

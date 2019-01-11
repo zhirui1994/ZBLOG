@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class App extends Component {
+class EditorPage extends Component {
     constructor(...args){
         super(...args);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,7 +19,6 @@ class App extends Component {
     }
 
     render() {
-        const { issuesList } = this.props;
         return (
         <div className="Editor">
             <header className="App-header">
@@ -35,4 +34,4 @@ class App extends Component {
     }
 }
 
-export default connect()(App);
+export default connect()(EditorPage);

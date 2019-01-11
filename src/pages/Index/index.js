@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import moment from 'moment';
 import { createSelector } from 'reselect';
+import { NavLink } from 'react-router-dom';
 import styles from './style.module.scss'
 
 const DEFAULT_MILESTONE = {
@@ -17,13 +18,14 @@ const DEFAULT_ISSUES_OBJ = {
     totalCount: 0,
 }
 
-class App extends Component {
+class IndexPage extends Component {
     constructor(...args) {
         super(args);
         this.state = {
             activeMilestone: DEFAULT_MILESTONE
         }
     }
+
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch.repository.initIndex();
@@ -43,7 +45,7 @@ class App extends Component {
             <nav>
                 {milestonesList.map(milestone => {
                     return (
-                        <a
+                        <span
                             key={milestone.id}
                             className={classNames(
                                 styles.navItem,
@@ -54,7 +56,7 @@ class App extends Component {
                             )}
                         >
                             {milestone.title}
-                        </a>
+                        </span>
                     )
                 })}
             </nav>
@@ -63,7 +65,9 @@ class App extends Component {
                 {issuesList.map(issue => {
                     return (
                         <article className={styles.article} key={issue.id}>
-                            <h3 className={styles.articleTitle}>{issue.title}</h3>
+                            <NavLink to={`/article/${issue.number}`}>
+                                <h3 className={styles.articleTitle}>{issue.title}</h3>
+                            </NavLink>
                             <p className={styles.articleInfo}>
                                 <span>
                                     <i className="fa fa-calendar" aria-hidden="true"></i>
@@ -135,4 +139,4 @@ const mapState = createSelector(
     }
 )
 
-export default connect(mapState)(App);
+export default connect(mapState)(IndexPage);
