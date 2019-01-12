@@ -125,7 +125,7 @@ const mapState = createSelector(
             milestonesList.unshift(DEFAULT_MILESTONE);
         }
         let issuesObj = DEFAULT_ISSUES_OBJ;
-        if (repository) {
+        if (repository && repository.issues) {
             issuesObj = repository.issues;
         }
         return {

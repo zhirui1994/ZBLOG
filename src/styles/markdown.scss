@@ -7,6 +7,13 @@
     p {
         margin-bottom: 15px;
     }
+    code, tt {
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
     .pl-c {
         color: #6a737d;
     }
@@ -33,10 +40,10 @@
         overflow: auto;
         padding: 16px;
         word-wrap: normal;
+        margin-bottom: 15px;
     }
     .highlight {
         pre {
-            margin-bottom: 0;
             word-break: normal;
         }
     }
