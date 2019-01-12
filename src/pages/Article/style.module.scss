@@ -41,17 +41,18 @@
         +.issueComment {
             margin-top: 20px;
         }
-        margin-left: 70px;
+        margin-left: 80px;
         position: relative;
         border: 1px solid #d1d5da;
         border-radius: 3px;
         .commentorAvatar {
             position: absolute;
-            left: -70px;
+            left: -80px;
             width: 60px;
             height: 60px;
             display: block;
-            border-radius: 4px;
+            border-radius: 5px;
+            overflow: hidden;
             img {
                 height: 100%;
             }
@@ -81,5 +82,72 @@
             padding-bottom: 5px;
         }
     }
-
+    
+    .createCommentContainer {
+        margin-top: 20px;
+        border-top: 2px solid #e6ebf1;
+        .createComment {
+            border: 1px solid #d1d5da;
+            border-radius: 3px;
+            margin: 20px 0 40px 80px;
+            position: relative;
+            .createCommentAvatar {
+                position: absolute;
+                left: -80px;
+                width: 60px;
+                height: 60px;
+                display: block;
+                border-radius: 5px;
+                overflow: hidden;
+                img {
+                    height: 100%;
+                }
+            }
+            .createCommentHeader {
+                background-color: #f6f8fa;
+                border-bottom: 1px solid #d1d5da;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                color: #586069;
+                padding: 10px 15px;
+                span {
+                    padding: 0 15px;
+                }
+            }
+            .createCommentInputContainer {
+                font-size: 0;
+                padding: 10px;
+                .createCommentTextarea {
+                    border: 1px solid #d1d5da;
+                    border-radius: 3px;
+                    resize: vertical;
+                    min-height: 100px;
+                    max-height: 400px;
+                    width: 100%;
+                    padding: 10px;
+                    box-sizing: border-box;
+                    display: inline-block;
+                }
+            }
+            .createCommentOperator {
+                overflow: hidden;
+                button {
+                    float: right;
+                    font-size: 16px;
+                    padding: 5px 15px;
+                    margin: 10px;
+                    border-radius: 5px;
+                    outline: none;
+                    background-color: #269f42;
+                    background-image: linear-gradient(-180deg,#2fcb53,#269f42 90%);
+                    cursor: pointer;
+                    color: #fff;
+                    &:hover {
+                        background-color: #2b9444;
+                        background-image: linear-gradient(-180deg,#3fb65b,#2b9444 90%);
+                    }
+                }
+            }
+        }
+    }
 }

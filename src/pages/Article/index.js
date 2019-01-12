@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import Loading from '../../components/Loading';
 import styles from './style.module.scss';
+import githubIconUrl from './github.svg';
 
 class ArticlePage extends Component {
     componentDidMount() {
@@ -17,6 +18,13 @@ class ArticlePage extends Component {
     componentWillUnmount() {
         const { dispatch } = this.props;
         dispatch.repository.closeCurrentIssue();
+    }
+
+    handleInput = (e) => {
+        e.preventDefault();
+        const { currentTarget } = e;
+        currentTarget.style.height = 'auto';
+        currentTarget.style.height = currentTarget.scrollTop + currentTarget.scrollHeight + 'px';
     }
 
     render() {
@@ -93,6 +101,24 @@ class ArticlePage extends Component {
                                     return null;
                                 }
                             })}
+                            <section className={styles.createCommentContainer}>
+                                <div className={styles.createComment} >
+                                    <a className={styles.createCommentAvatar} href="#">
+                                        <img src={githubIconUrl} alt="This is commentor's avatar" />
+                                    </a>
+                                    <div className={styles.createCommentHeader}>
+                                        <span>编辑</span>
+                                        <span>预览</span>
+                                        <span>通过GitHub<a>登陆</a></span>
+                                    </div>
+                                    <div className={styles.createCommentInputContainer}>
+                                        <textarea onInput={this.handleInput} className={styles.createCommentTextarea} placeholder="请编辑您的评论"></textarea>
+                                    </div>
+                                    <div className={styles.createCommentOperator}>
+                                        <button>评论</button>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </main>
                 </div>
