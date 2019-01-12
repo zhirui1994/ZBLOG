@@ -53,7 +53,7 @@ export async function initIndex() {
         },
         {
             headers: {
-                Authorization: 'token a068f2626ecd32c5dc40fd871d6e47b34de4eec4'
+                Authorization: `bearer ${config.token}`
             },
         }
     ).then(response => {
@@ -105,7 +105,7 @@ export async function getSingleIssue(number) {
         },
         {
             headers: {
-                Authorization: 'token a068f2626ecd32c5dc40fd871d6e47b34de4eec4'
+                Authorization: `bearer ${config.token}`
             },
         }
     ).then(response => {
