@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import { createSelector } from 'reselect';
+import classNames from 'classnames';
 import moment from 'moment';
 import styles from './style.module.scss';
 
@@ -23,7 +24,7 @@ class ArticlePage extends Component {
             <div className={styles.container}>
                 <header>
                     <h1>{currentIssue.title}</h1>
-                    <p>
+                    <p className={styles.articleInfo}>
                         <span>
                             <i className="fa fa-calendar" aria-hidden="true"></i>
                             {moment(currentIssue.createdAt).format('YYYY-MM-DD')}
@@ -54,7 +55,10 @@ class ArticlePage extends Component {
                     </p>
                 </header>
                 <main>
-                    <article dangerouslySetInnerHTML={{ __html: currentIssue.bodyHTML }}></article>
+                    <article
+                        className={classNames(styles.articleBody, 'markdown-body')}
+                        dangerouslySetInnerHTML={{ __html: currentIssue.bodyHTML }}
+                    ></article>
                 </main>
             </div>
         );

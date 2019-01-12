@@ -2,3 +2,33 @@
     width: 800px;
     margin: 0 auto;
 }
+
+.articleInfo {
+    >span {
+        margin-right: 10px;
+        >i {
+            margin-right: 5px;
+        }
+        .articleCategory {
+            background: #666;
+            color: white;
+            padding: 0 20px;
+            border-radius: 3px;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        .articleLabel {
+            margin-left: 5px;
+            border-radius: 3px;
+            padding: 0 3px;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.articleBody {
+    margin-top: 20px;
+}
