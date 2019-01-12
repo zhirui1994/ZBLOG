@@ -2,6 +2,7 @@ import axios from 'axios';
 import { normalize } from 'normalizr';
 import config from '../commons/config';
 import { repository } from '../commons/schemas';
+import getToken from '../utils/getToken';
 
 export async function initIndex() {
     return axios.post(
@@ -53,7 +54,7 @@ export async function initIndex() {
         },
         {
             headers: {
-                Authorization: `bearer ${config.token}`
+                Authorization: `bearer ${getToken()}`
             },
         }
     ).then(response => {
@@ -105,7 +106,7 @@ export async function getSingleIssue(number) {
         },
         {
             headers: {
-                Authorization: `bearer ${config.token}`
+                Authorization: `bearer ${getToken()}`
             },
         }
     ).then(response => {
