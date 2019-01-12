@@ -6,6 +6,7 @@ export default {
     name: 'repository',
     state: {
         result: '',
+        loading: true,
     },
     reducers: {
         update(state, payload) {
@@ -13,21 +14,33 @@ export default {
         }
     },
     effects: (dispatch) => ({
-        async initIndex() {
+        async initIndex(_, rootState) {
+            if (!rootState.repository.loading) {
+                await dispatch.repository.update({
+                    loading: true,
+                });
+            }
             const response = await githubServices.initIndex()
             if (response) {
                 await dispatch.entities.update(response.entities);
                 await dispatch.repository.update({
-                    result: response.result
+                    result: response.result,
+                    loading: false,
                 });
             }
         },
-        async getSingleIssue(number) {
+        async getSingleIssue(number, rootState) {
+            if (!rootState.repository.loading) {
+                await dispatch.repository.update({
+                    loading: true,
+                });
+            }
             const response = await githubServices.getSingleIssue(number)
             if (response) {
                 await dispatch.entities.update(response.entities);
                 await dispatch.repository.update({
                     result: response.result,
+                    loading: false,
                 })
             }
         },

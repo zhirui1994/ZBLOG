@@ -32,3 +32,54 @@
 .articleBody {
     margin-top: 20px;
 }
+
+.issueCommentsContainer {
+    border-top: 2px solid #e6ebf1;
+    padding-top: 20px;
+    margin: 20px 0 30px;
+    .issueComment {
+        +.issueComment {
+            margin-top: 20px;
+        }
+        margin-left: 70px;
+        position: relative;
+        border: 1px solid #d1d5da;
+        border-radius: 3px;
+        .commentorAvatar {
+            position: absolute;
+            left: -70px;
+            width: 60px;
+            height: 60px;
+            display: block;
+            border-radius: 4px;
+            img {
+                height: 100%;
+            }
+        }
+        .issueCommentHeader {
+            background-color: #f6f8fa;
+            border-bottom: 1px solid #d1d5da;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            color: #586069;
+            padding: 10px 15px;
+            a {
+                text-decoration: none;
+                em {
+                    font-style: normal;
+                    color: #666;
+                    font-weight: bold;
+                }
+                +span {
+                    margin-left: 20px;  
+                }
+            }
+
+        }
+        .issueCommentContent {
+            padding: 15px;
+            padding-bottom: 5px;
+        }
+    }
+
+}
