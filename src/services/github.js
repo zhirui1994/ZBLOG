@@ -113,3 +113,14 @@ export async function getSingleIssue(number) {
         return normalize(response.data.data.repository, repository);
     })
 }
+
+export function getLoginAuthLink() {
+    const query = {
+        scope: 'public_repo',
+        redirect_uri: encodeURIComponent(`https://zhirui1994.github.io/#/article/1`),
+        client_id: config.client_id,
+        // client_secret: config.client_secret,
+    }
+    const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');
+    return `https://github.com/login/oauth/authorize?${queryString}`
+} 

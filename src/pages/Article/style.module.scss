@@ -113,6 +113,23 @@
                 span {
                     padding: 0 15px;
                 }
+                .commentSwitch {
+                    cursor: pointer;
+                    &.active {
+                        background: #fff;
+                        padding-bottom: 10px;
+                        border: 1px solid #d1d5da;
+                        border-bottom: 1px solid #fff;
+                        border-top-left-radius: 4px;
+                        border-top-right-radius: 4px;
+                    }
+                }
+                .commentorLogin {
+                    float: right;
+                    a {
+                        text-decoration: none;
+                    }
+                }
             }
             .createCommentInputContainer {
                 font-size: 0;
@@ -136,6 +153,7 @@
                     font-size: 16px;
                     padding: 5px 15px;
                     margin: 10px;
+                    margin-top: 0;
                     border-radius: 5px;
                     outline: none;
                     background-color: #269f42;
