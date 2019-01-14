@@ -123,4 +123,33 @@ export function getLoginAuthLink() {
     }
     const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');
     return `https://github.com/login/oauth/authorize?${queryString}`
-} 
+}
+
+export async function userAuth(code) {
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token'
+    axios.post(proxyUrl, {
+        code,
+        client_id: config.client_id,
+        client_secret: config.client_secret,
+    }).then(response => {
+        return response && response.data;
+    })
+}
+
+export async function getViewer(token) {
+    axios.post('https://api.github.com/graphql', {
+        query: `query { 
+            viewer {
+                email,
+                id,
+                login,
+                name,
+                url
+            }
+        }`
+        },
+        {
+            Authorization: token,
+        }
+    ).then(response => response && response.data && response.data.data);
+}

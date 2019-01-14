@@ -1,0 +1,1 @@
+export const USER_AUTH = 'GITHUB_USER_AUTH';
