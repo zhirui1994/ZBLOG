@@ -33,7 +33,7 @@ export default {
                     loading: true,
                 })
             }
-            
+
             const code = getSearchCode();
             const userCache = localStorage.getItem(USER_AUTH);
             if (userCache ) {
@@ -71,11 +71,9 @@ export default {
                 }
             }
 
-            if (rootState.user.loading) {
-                await dispatch.user.update({
-                    loading: false,
-                })
-            }
+            await dispatch.user.update({
+                loading: false,
+            })
         }
     })
 }

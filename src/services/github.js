@@ -116,7 +116,7 @@ export async function getSingleIssue(number) {
 
 export function getLoginAuthLink() {
     const query = {
-        scope: 'public_repo',
+        scope: 'public_repo, user',
         redirect_uri: encodeURIComponent(`https://zhirui1994.github.io/#/article/1`),
         client_id: config.client_id,
         // client_secret: config.client_secret,
@@ -127,33 +127,39 @@ export function getLoginAuthLink() {
 
 export async function userAuth(code) {
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token'
-    axios.post(proxyUrl, {
+    return axios.post(proxyUrl, {
         code,
         client_id: config.client_id,
         client_secret: config.client_secret,
     },
     {
-        responseType: 'json',
+        headers: {
+            Accept: 'application/json'
+        }
     }).then(response => {
         return response && response.data;
     })
 }
 
 export async function getViewer(token) {
-    axios.post('https://api.github.com/graphql', {
+    return axios.post('https://api.github.com/graphql', {
         query: `query { 
             viewer {
                 email,
                 id,
                 login,
                 name,
-                url
+                url,
+                avatarUrl, 
             }
         }`
         },
         {
-            Authorization: token,
-            responseType: 'json',
+            headers: {
+                Authorization: token,
+            }
         }
-    ).then(response => response && response.data && response.data.data);
+    ).then(response => {
+        return response && response.data && response.data.data;
+    });
 }
