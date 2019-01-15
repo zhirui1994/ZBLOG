@@ -33,6 +33,7 @@ export default {
                     loading: true,
                 })
             }
+            
             const code = getSearchCode();
             const userCache = localStorage.getItem(USER_AUTH);
             if (userCache ) {
@@ -67,13 +68,13 @@ export default {
                             viewer: user,
                         })
                     }
-                } else {
-                    if (rootState.user.loading) {
-                        await dispatch.user.update({
-                            loading: false,
-                        })
-                    }
                 }
+            }
+
+            if (rootState.user.loading) {
+                await dispatch.user.update({
+                    loading: false,
+                })
             }
         }
     })
