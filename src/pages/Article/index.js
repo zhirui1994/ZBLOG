@@ -29,6 +29,11 @@ class ArticlePage extends Component {
         currentTarget.style.height = currentTarget.scrollTop + currentTarget.scrollHeight + 'px';
     }
 
+    handleSubmitComment = (e) => {
+        e.preventDefault();
+
+    }
+
     render() {
         const {
             loading,
@@ -129,7 +134,7 @@ class ArticlePage extends Component {
                                         )}
                                     </div>
                                     <div className={styles.createCommentInputContainer}>
-                                        <textarea onInput={this.handleInput} className={styles.createCommentTextarea} placeholder="请编辑您的评论"></textarea>
+                                        <textarea ref={textarea => this.comment = textarea} onInput={this.handleInput} className={styles.createCommentTextarea} placeholder="请编辑您的评论"></textarea>
                                     </div>
                                     <div className={styles.createCommentOperator}>
                                         <button>评论</button>

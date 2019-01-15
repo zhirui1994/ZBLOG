@@ -1,4 +1,4 @@
-import { userAuth, getViewer } from '../services/github';
+import { userAuth, getViewer, addComment } from '../services/github';
 import { getSearchCode } from '../utils/urlSearchParser';
 import { USER_AUTH } from '../commons/const';
 
@@ -74,6 +74,25 @@ export default {
             await dispatch.user.update({
                 loading: false,
             })
+        },
+        async addComment({id, content}, rootState) {
+            if (!rootState.user.accessToken) {
+                return;
+            }
+
+            const token = `${rootState.user.tokenType} ${rootState.user.accessToken}`;
+            const comment = await addComment({id, content, token});
+            if (comment) {
+                const issuesMap = rootState.entities.issues;
+                const commentIssue = issuesMap[id];
+                commentIssue.comments.nodes.push(comment.result)
+                dispatch.entities.update({
+                    issues: {
+                        [id]: commentIssue,
+                    },
+                    ...comment.entities,
+                })
+            }
         }
     })
 }

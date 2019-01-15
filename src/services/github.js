@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
 import config from '../commons/config';
-import { repository } from '../commons/schemas';
+import { repository, comment as commentSchema } from '../commons/schemas';
 import getToken from '../utils/getToken';
 
 export async function initIndex() {
@@ -119,7 +119,6 @@ export function getLoginAuthLink() {
         scope: 'public_repo, user',
         redirect_uri: encodeURIComponent(`https://zhirui1994.github.io/#/article/1`),
         client_id: config.client_id,
-        // client_secret: config.client_secret,
     }
     const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');
     return `https://github.com/login/oauth/authorize?${queryString}`
@@ -161,5 +160,39 @@ export async function getViewer(token) {
         }
     ).then(response => {
         return response && response.data && response.data.data && response.data.data.viewer;
+    });
+}
+
+export async function addComment({id, content, token}) {
+    return axios.post(
+        'https://api.github.com/graphql',
+        {
+            mutation: `mutation {
+                addComment(input:{subjectId: ${id}, body: ${content}}) {
+                    commentEdge {
+                        node {
+                            id,
+                            bodyHTML,
+                            createdAt,
+                            author {
+                                avatarUrl,
+                                login,
+                                url,
+                            },
+                        }
+                    }
+                }
+            }`
+        },
+        {
+            headers: {
+                Authorization: token,
+            }
+        }
+    ).then(response => {
+        const comment = response && response.data && response.data.data && response.data.data.commentEdge.node;
+        if (comment) {
+            return normalize(comment, commentSchema)
+        }
     });
 }
