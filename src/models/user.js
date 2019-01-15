@@ -28,6 +28,11 @@ export default {
     },
     effects: (dispatch) => ({
         async getAuthToken(_, rootState) {
+            if (!rootState.user.loading) {
+                await dispatch.user.update({
+                    loading: true,
+                })
+            }
             const code = getSearchCode();
             const userCache = localStorage.getItem(USER_AUTH);
             if (userCache ) {
@@ -36,7 +41,7 @@ export default {
                     token_type,
                     scope,
                 } = JSON.parse(userCache);
-                const user = getViewer(`${token_type} ${access_token}`)
+                const user = await getViewer(`${token_type} ${access_token}`)
                 if (user) {
                     await dispatch.user.update({
                         accessToken: access_token,
@@ -48,15 +53,10 @@ export default {
                     })
                 }
             } else if (code) {
-                if (!rootState.user.loading) {
-                    await dispatch.user.update({
-                        loading: true,
-                    })
-                }
                 const oauth = await userAuth(code);
                 if (oauth && oauth.access_token) {
                     localStorage.setItem(USER_AUTH, JSON.stringify(oauth));
-                    const user = getViewer(`${oauth.token_type} ${oauth.access_token}`)
+                    const user = await getViewer(`${oauth.token_type} ${oauth.access_token}`)
                     if (user) {
                         await dispatch.user.update({
                             accessToken: oauth.access_token,
@@ -68,9 +68,11 @@ export default {
                         })
                     }
                 } else {
-                    await dispatch.user.update({
-                        loading: false,
-                    })
+                    if (rootState.user.loading) {
+                        await dispatch.user.update({
+                            loading: false,
+                        })
+                    }
                 }
             }
         }

@@ -150,6 +150,7 @@ export async function getViewer(token) {
         },
         {
             Authorization: token,
+            responseType: 'json',
         }
     ).then(response => response && response.data && response.data.data);
 }
