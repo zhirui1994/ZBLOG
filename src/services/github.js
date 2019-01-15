@@ -167,8 +167,8 @@ export async function addComment({id, content, token}) {
     return axios.post(
         'https://api.github.com/graphql',
         {
-            mutation: `mutation {
-                addComment(input:{subjectId: ${id}, body: ${content}}) {
+            query: `mutation {
+                addComment(input:{subjectId: "${id}", body: "${content}"}) {
                     commentEdge {
                         node {
                             id,
@@ -190,7 +190,8 @@ export async function addComment({id, content, token}) {
             }
         }
     ).then(response => {
-        const comment = response && response.data && response.data.data && response.data.data.commentEdge.node;
+        const comment = response && response.data && response.data.data
+            && response.data.data.addComment.commentEdge.node;
         if (comment) {
             return normalize(comment, commentSchema)
         }

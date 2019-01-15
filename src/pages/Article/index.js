@@ -31,7 +31,11 @@ class ArticlePage extends Component {
 
     handleSubmitComment = (e) => {
         e.preventDefault();
-
+        const content = this.comment.value;
+        if (content) {
+            const { dispatch, currentIssue } = this.props;
+            dispatch.user.addComment({id: currentIssue.id, content});
+        }
     }
 
     render() {
@@ -137,7 +141,7 @@ class ArticlePage extends Component {
                                         <textarea ref={textarea => this.comment = textarea} onInput={this.handleInput} className={styles.createCommentTextarea} placeholder="请编辑您的评论"></textarea>
                                     </div>
                                     <div className={styles.createCommentOperator}>
-                                        <button>评论</button>
+                                        <button onClick={this.handleSubmitComment} >评论</button>
                                     </div>
                                 </div>
                             </section>
