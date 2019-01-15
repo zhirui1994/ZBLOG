@@ -34,7 +34,9 @@ class ArticlePage extends Component {
         const content = this.comment.value;
         if (content) {
             const { dispatch, currentIssue } = this.props;
-            dispatch.user.addComment({id: currentIssue.id, content});
+            dispatch.user.addComment({id: currentIssue.id, content, callback: () => {
+                this.comment.value = '';
+            }});
         }
     }
 

@@ -75,7 +75,7 @@ export default {
                 loading: false,
             })
         },
-        async addComment({id, content}, rootState) {
+        async addComment({id, content, callback}, rootState) {
             if (!rootState.user.accessToken) {
                 return;
             }
@@ -86,12 +86,13 @@ export default {
                 const issuesMap = rootState.entities.issues;
                 const commentIssue = issuesMap[id];
                 commentIssue.comments.nodes.push(comment.result)
-                dispatch.entities.update({
+                await dispatch.entities.update({
                     issues: {
                         [id]: commentIssue,
                     },
                     ...comment.entities,
                 })
+                typeof callback === 'function' && callback();
             }
         }
     })

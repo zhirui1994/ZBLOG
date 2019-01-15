@@ -1,5 +1,7 @@
 export default {
     owner: '',
     repo: '',
-    token: ''
+    token: '',
+    client_id: '',
+    client_secret: '',
 }
