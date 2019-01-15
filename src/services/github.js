@@ -131,6 +131,9 @@ export async function userAuth(code) {
         code,
         client_id: config.client_id,
         client_secret: config.client_secret,
+    },
+    {
+        responseType: 'json',
     }).then(response => {
         return response && response.data;
     })
