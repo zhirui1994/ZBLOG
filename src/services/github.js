@@ -160,6 +160,6 @@ export async function getViewer(token) {
             }
         }
     ).then(response => {
-        return response && response.data && response.data.data;
+        return response && response.data && response.data.data && response.data.data.viewer;
     });
 }
