@@ -1,11 +1,62 @@
 .markdown-body {
     padding: 5px 5px 15px;
-    h1, h2, h3, h4, h5, h6 {
-        border-bottom: 1px solid #eaecef;
-        margin-bottom: 15px;
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 22px;
     }
-    p {
-        margin-bottom: 15px;
+    h1, h2 {
+        border-bottom: 1px solid #eaecef;
+        padding-bottom: .3em;
+    }
+    h2, h3, h4, h5, h6 {
+        margin-bottom: 16px;
+        margin-top: 24px;
+    }
+    table {
+        display: block;
+        overflow: auto;
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        thead {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+
+        }
+        tr {
+            &:nth-child(2n) {
+                background-color: #f6f8fa;
+            }
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+            background-color: #fff;
+            border-top: 1px solid #c6cbd1;
+        }
+        td {
+            display: table-cell;
+            vertical-align: inherit;
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+        }
+        th {
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+            font-weight: 600;
+        }
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+    }
+    p, ol {
+        margin-bottom: 16px;
+    }
+    ol  {
+        margin-top: 0;
+        padding-left: 2rem;
     }
     code, tt {
         background-color: rgba(27,31,35,.05);
@@ -13,6 +64,20 @@
         font-size: 85%;
         margin: 0;
         padding: .2em .4em;
+    }
+    pre {
+        background-color: #f6f8fa;
+        border-radius: 3px;
+        font-size: 85%;
+        line-height: 1.45;
+        overflow: auto;
+        padding: 16px;
+        word-wrap: normal;
+        margin-bottom: 15px;
+        code {
+            background-color: #f6f8fa;
+            display: inline-block;
+        }
     }
     .pl-c {
         color: #6a737d;
