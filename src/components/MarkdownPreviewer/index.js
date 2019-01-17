@@ -5,6 +5,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github-gist.css';
 
 marked.setOptions({
+    breaks: true,
     highlight: (code) => {
         return hljs.highlightAuto(code).value;
     }
