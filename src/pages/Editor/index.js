@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
+import MarkdownPreviewer from '../../components/MarkdownPreviewer';
+import styles from './style.module.scss';
 
 class EditorPage extends Component {
-    constructor(...args){
-        super(...args);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleEditorInput(e) {
+    handleChange = (value) => {
         
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
         const { dispatch } = this.props;
         if (this.title && this.body) {
@@ -24,25 +22,33 @@ class EditorPage extends Component {
 
     render() {
         return (
-        <div className="Editor">
-            <header className="App-header">
-                文章编辑页！
+        <div className={styles.editorContainer}>
+            <header className={styles.header}>
+                <h2>文章编辑页</h2>
             </header>
             <main>
                 <form>
-                    <label htmlFor="title">标题：<input ref={input => this.title = input} type="text" id="title" /></label>
-                    <label htmlFor="milestone">分类：</label>
-                    <label htmlFor="labels">标签：</label>
-                    <label htmlFor="body">内容：</label>
-                    <div>
-                        <textarea spellCheck="false" ref={textarea => this.editor = textarea} onInput={this.handleEditorInput} id="editor"></textarea>
-                        <section ref={section => this.preview = section} id="preview"></section>
-                    </div>
-                    <input onClick={this.handleSubmit} type="submit" value="创建" />
+                    <label className={styles.fileds} htmlFor="title">标题：<input ref={input => this.title = input} type="text" id="title" /></label>
+                    <label className={classNames(styles.fileds, styles.editorContent)} htmlFor="editor">内容：
+                        <MarkdownPreviewer onChange={this.handleChange} />
+                    </label>
+                    <label className={styles.fileds} htmlFor="milestone">
+                        分类：
+                        <label className={styles.checkLabel}><input type="radio" name="分类" value="a"/>分类1</label>
+                        <label className={styles.checkLabel}><input type="radio" name="分类" value="b"/>分类2</label>
+                        <label className={styles.checkLabel}><input type="radio" name="分类" value="c"/>分类3</label>
+                    </label>
+                    <label className={styles.fileds} htmlFor="labels">
+                        标签：
+                        <label className={styles.checkLabel}><input type="checkbox" name="标签1" value="a"/>标签1</label>
+                        <label className={styles.checkLabel}><input type="checkbox" name="标签2" value="b"/>标签2</label>
+                        <label className={styles.checkLabel}><input type="checkbox" name="标签3" value="c"/>标签3</label>
+                    </label>
+                    <input className={styles.submitButton} onClick={this.handleSubmit} type="submit" value="创建" />
                 </form>
             </main>
             <footer>
-                页脚
+                <p>Copyright ©{new Date().getFullYear()} Roy Zhi</p>
             </footer>
         </div>
         );
