@@ -7,6 +7,10 @@ class EditorPage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    handleEditorInput(e) {
+        
+    }
+
     handleSubmit(e) {
         e.preventDefault();
         const { dispatch } = this.props;
@@ -24,11 +28,22 @@ class EditorPage extends Component {
             <header className="App-header">
                 文章编辑页！
             </header>
-            <form>
-                <label htmlFor="title">标题：<input ref={input => this.title = input} type="text" id="title" /></label>
-                <label htmlFor="body">内容：<textarea ref={textarea => this.body = textarea} cols="60" rows="5" id="body" /></label>
-                <input onClick={this.handleSubmit} type="submit" value="创建" />
-            </form>
+            <main>
+                <form>
+                    <label htmlFor="title">标题：<input ref={input => this.title = input} type="text" id="title" /></label>
+                    <label htmlFor="milestone">分类：</label>
+                    <label htmlFor="labels">标签：</label>
+                    <label htmlFor="body">内容：</label>
+                    <div>
+                        <textarea spellCheck="false" ref={textarea => this.editor = textarea} onInput={this.handleEditorInput} id="editor"></textarea>
+                        <section ref={section => this.preview = section} id="preview"></section>
+                    </div>
+                    <input onClick={this.handleSubmit} type="submit" value="创建" />
+                </form>
+            </main>
+            <footer>
+                页脚
+            </footer>
         </div>
         );
     }
