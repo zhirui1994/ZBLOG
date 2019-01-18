@@ -197,3 +197,44 @@ export async function addComment({id, content, token}) {
         }
     });
 }
+
+export async function initEditor() {
+    return axios.post(
+        'https://api.github.com/graphql',
+        {
+            query: `query {
+                repository(owner: "${config.owner}", name: "${config.repo}") {
+                    id,
+                    labels(first: 100) {
+                        nodes {
+                            id,
+                            name,
+                            color,
+                        } 
+                    },
+                    milestones(first:100) {
+                        nodes {
+                            id,
+                            number,
+                            state,
+                            title,
+                        }
+                    },
+                }
+            }`
+        },
+        {
+            headers: {
+                Authorization: `bearer ${getToken()}`
+            },
+        }
+    ).then(response => {
+        const repositoryObj = response && response.data
+            && response.data.data && response.data.data.repository;
+        if (repositoryObj) {
+            return normalize(repositoryObj, repository);
+        } else {
+            return false;
+        }
+    })
+}
