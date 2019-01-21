@@ -238,3 +238,36 @@ export async function initEditor() {
         }
     })
 }
+
+export async function searchIssues(params) {
+    return axios.post(
+        'https://api.github.com/graphql',
+        {
+            query: `search(type: ISSUE, last: 20, query: "${params.query ? `${params.query}+` : ''}repo:${config.owner}/${config.repo}+") {
+                issueCount
+                pageInfo {
+                    endCursor
+                    startCursor
+                    hasNextPage
+                    hasPreviousPage
+                }
+                nodes {
+                    ... on Issue {
+                        id,
+                        title,
+                        number,
+                        createdAt,
+                        milestone {
+                            id
+                        },
+                        labels(first:100) {
+                            nodes {
+                                id,
+                            }
+                        }
+                    }
+                }
+            }`
+        }
+    );
+}
