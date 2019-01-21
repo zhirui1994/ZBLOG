@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
 import config from '../commons/config';
-import { repository, comment as commentSchema, milestone } from '../commons/schemas';
+import { repository, comment as commentSchema } from '../commons/schemas';
 import getToken from '../utils/getToken';
 
 export async function initIndex() {
