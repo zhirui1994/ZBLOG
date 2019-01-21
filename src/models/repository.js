@@ -82,6 +82,26 @@ export default {
                     loading: false,
                 });
             }
-        } 
+        },
+        async searchIssues(payload, rootState) {
+            const response = await githubServices.searchIssues(payload);
+            if (response) {
+                const result = rootState.repository.result;
+                const currentRepository = rootState.entities.repositories[result];
+                if (currentRepository) {
+                    currentRepository.issues = {
+                        pageInfo: response.pageInfo,
+                        totalCount: response.issueCount,
+                        nodes: response.nodes,
+                    }
+                    dispatch.entities.update({
+                        repositories: {
+                            [result]: currentRepository,
+                        },
+                        ...response.entities,
+                    })
+                }
+            }
+        }
     })
 }

@@ -32,6 +32,13 @@ class IndexPage extends Component {
         dispatch.repository.initIndex();
     }
 
+    handleCategoryClick = (category) => {
+        const { dispatch } = this.props;
+        dispatch.repository.searchIssues({
+            milestone: category.title,
+        });
+    }
+
     render() {
         const { activeMilestone } = this.state;
         const {
@@ -49,6 +56,7 @@ class IndexPage extends Component {
                         {milestonesList.map(milestone => {
                             return (
                                 <span
+                                    onClick={() => this.handleCategoryClick(milestone)}
                                     key={milestone.id}
                                     className={classNames(
                                         styles.navItem,

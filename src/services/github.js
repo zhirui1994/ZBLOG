@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
 import config from '../commons/config';
-import { repository, comment as commentSchema } from '../commons/schemas';
+import { repository, comment as commentSchema, issue as issueSchema } from '../commons/schemas';
 import getToken from '../utils/getToken';
 
 export async function initIndex() {
@@ -279,5 +279,13 @@ export async function searchIssues(params) {
                 }
             }`
         }
-    );
+    ).then(response => {
+        const search = response && response.data && response.data.data && response.data.data.search;
+        const norNodes = normalize(search.nodes, [issueSchema]);
+        return {
+            ...search,
+            nodes: norNodes.results,
+            entities: norNodes.entities,
+        }
+    });
 }
