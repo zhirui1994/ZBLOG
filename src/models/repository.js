@@ -56,6 +56,31 @@ export default {
                 };
                 await dispatch.entities.update(newEntities);
             }
-        }
+        },
+        async initEditor(_, rootState) {
+            const result = rootState.repository.result;
+            const currentRepository = rootState.entities.repositories[result];
+            if(
+                currentRepository.issues &&
+                currentRepository.issues.nodes.length &&
+                currentRepository.milestones &&
+                currentRepository.milestones.nodes.length
+            ) {
+                return;
+            }
+            if (!rootState.repository.loading) {
+                await dispatch.repository.update({
+                    loading: true,
+                });
+            }
+            const response = await githubServices.initEditor()
+            if (response) {
+                await dispatch.entities.update(response.entities);
+                await dispatch.repository.update({
+                    result: response.result,
+                    loading: false,
+                });
+            }
+        } 
     })
 }

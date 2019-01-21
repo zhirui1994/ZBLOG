@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import MarkdownPreviewer from '../../components/MarkdownPreviewer';
 import styles from './style.module.scss';
 
 class EditorPage extends Component {
+    content = undefined;
+
+    componentDidMount() {
+        const { labelsList, milestonesList, dispatch } = this.props;
+        if (!labelsList.length || !milestonesList.length) {
+            dispatch.repository.initEditor();
+        }
+    }
+
     handleChange = (value) => {
-        
+        this.content = value;
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         const { dispatch } = this.props;
-        if (this.title && this.body) {
+        if (this.title && this.content) {
             dispatch.issues.create({
                 title: this.title.value,
-                body: this.body.value,
+                body: this.content,
             })
         }
     }
 
     render() {
+        const { labelsList, milestonesList } = this.props;
         return (
         <div className={styles.editorContainer}>
             <header className={styles.header}>
@@ -34,15 +45,25 @@ class EditorPage extends Component {
                     </label>
                     <label className={styles.fileds} htmlFor="milestone">
                         分类：
-                        <label className={styles.checkLabel}><input type="radio" name="分类" value="a"/>分类1</label>
-                        <label className={styles.checkLabel}><input type="radio" name="分类" value="b"/>分类2</label>
-                        <label className={styles.checkLabel}><input type="radio" name="分类" value="c"/>分类3</label>
+                        {milestonesList.map(milestone => {
+                            return (
+                                <label className={styles.checkLabel}>
+                                    <input type="radio" name="categories" value={milestone.id} />
+                                    {milestone.title}
+                                </label>
+                            );
+                        })}
                     </label>
                     <label className={styles.fileds} htmlFor="labels">
                         标签：
-                        <label className={styles.checkLabel}><input type="checkbox" name="标签1" value="a"/>标签1</label>
-                        <label className={styles.checkLabel}><input type="checkbox" name="标签2" value="b"/>标签2</label>
-                        <label className={styles.checkLabel}><input type="checkbox" name="标签3" value="c"/>标签3</label>
+                        {labelsList.map(label => {
+                            return (
+                                <label className={styles.checkLabel}>
+                                    <input type="checkbox" name={`label-${label.name}`} value={label.id}/>
+                                    {label.name}
+                                </label>
+                            );
+                        })}
                     </label>
                     <input className={styles.submitButton} onClick={this.handleSubmit} type="submit" value="创建" />
                 </form>
@@ -55,4 +76,37 @@ class EditorPage extends Component {
     }
 }
 
-export default connect()(EditorPage);
+const mapState = createSelector(
+    [
+        store => store.repository.result,
+        store => store.repository.loading,
+        store => store.entities.repositories,
+        store => store.entities.labels,
+        store => store.entities.milestones,
+    ],
+    (
+        result,
+        loading,
+        repositoriesMap,
+        labelsMap,
+        milestonesMap
+    ) => {
+        let labelsList = [], milestonesList = [];
+        const currentRepository = repositoriesMap[result];
+        if (
+            currentRepository &&
+            currentRepository.issues.nodes &&
+            currentRepository.milestones.nodes
+        ) {
+            labelsList = currentRepository.issues.nodes.map(id => labelsMap[id]);
+            milestonesList = currentRepository.milestones.nodes.map(id => milestonesMap[id]);
+        }
+        return {
+            loading,
+            labelsList,
+            milestonesList,
+        }
+    }
+)
+
+export default connect(mapState)(EditorPage);
