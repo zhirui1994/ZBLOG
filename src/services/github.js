@@ -240,39 +240,41 @@ export async function initEditor() {
 }
 
 export async function searchIssues(params) {
-    let queryString = `repo:${config.owner}/${config.repo}+`;
+    let queryString = `repo:${config.owner}/${config.repo} `;
     if (params && params.milestone) {
-        queryString += `milestone:${params.milestone}+`;
+        queryString += `milestone:${params.milestone} `;
     }
     if (params && params.labels && params.labels.length) {
-        queryString += params.labels.map(label => `label:${label}+`).join('');
+        queryString += params.labels.map(label => `label:${label} `).join('');
     }
     if (params && params.query) {
-        queryString += `${params.query}+`
+        queryString += `${params.query} `
     }
     return axios.post(
         'https://api.github.com/graphql',
         {
-            query: `search(type: ISSUE, last: 20, query: "${queryString}") {
-                issueCount
-                pageInfo {
-                    endCursor
-                    startCursor
-                    hasNextPage
-                    hasPreviousPage
-                }
-                nodes {
-                    ... on Issue {
-                        id,
-                        title,
-                        number,
-                        createdAt,
-                        milestone {
-                            id
-                        },
-                        labels(first:100) {
-                            nodes {
-                                id,
+            query: `query {
+                search(type: ISSUE, last: 20, query: "${queryString.trim()}") {
+                    issueCount
+                    pageInfo {
+                        endCursor
+                        startCursor
+                        hasNextPage
+                        hasPreviousPage
+                    }
+                    nodes {
+                        ... on Issue {
+                            id,
+                            title,
+                            number,
+                            createdAt,
+                            milestone {
+                                id
+                            },
+                            labels(first:100) {
+                                nodes {
+                                    id,
+                                }
                             }
                         }
                     }
@@ -286,11 +288,15 @@ export async function searchIssues(params) {
         }
     ).then(response => {
         const search = response && response.data && response.data.data && response.data.data.search;
-        const norNodes = normalize(search.nodes, [issueSchema]);
-        return {
-            ...search,
-            nodes: norNodes.results,
-            entities: norNodes.entities,
+        if (search) {
+            const norNodes = normalize(search.nodes, [issueSchema]);
+            return {
+                ...search,
+                nodes: norNodes.result,
+                entities: norNodes.entities,
+            }
+        } else {
+            return false;
         }
     });
 }

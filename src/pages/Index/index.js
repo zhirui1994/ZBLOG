@@ -34,8 +34,12 @@ class IndexPage extends Component {
 
     handleCategoryClick = (category) => {
         const { dispatch } = this.props;
+        this.setState({
+            activeMilestone: category,
+        });
+        const title = category.id === DEFAULT_MILESTONE.id ? '*' : category.title;
         dispatch.repository.searchIssues({
-            milestone: category.title,
+            milestone: title,
         });
     }
 
@@ -132,6 +136,7 @@ const mapState = createSelector(
         issuesMap,
         milestonesMap,
         labelsMap,
+        searchParams
     ) => {
         const repository = repositoriesMap[result];
         const milestonesList = Object.keys(milestonesMap).map(id => milestonesMap[id]);
@@ -139,7 +144,7 @@ const mapState = createSelector(
             milestonesList.unshift(DEFAULT_MILESTONE);
         }
         let issuesObj = DEFAULT_ISSUES_OBJ;
-        if (repository && repository.issues) {
+        if (repository && repository.issues && repository.issues.nodes) {
             issuesObj = repository.issues;
         }
         return {

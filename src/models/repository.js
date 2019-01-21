@@ -7,6 +7,11 @@ export default {
     state: {
         result: '',
         loading: true,
+        searchParams: {
+            milestone: '*',
+            labels: [],
+            query: '', 
+        }
     },
     reducers: {
         update(state, payload) {
@@ -84,7 +89,19 @@ export default {
             }
         },
         async searchIssues(payload, rootState) {
-            const response = await githubServices.searchIssues(payload);
+            const { milestone, labels, query } = payload;
+            await dispatch.repository.update({
+                searchParams: {
+                    milestone,
+                    labels,
+                    query,
+                }
+            })
+            const response = await githubServices.searchIssues({
+                milestone,
+                labels,
+                query,
+            });
             if (response) {
                 const result = rootState.repository.result;
                 const currentRepository = rootState.entities.repositories[result];
