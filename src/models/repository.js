@@ -61,8 +61,9 @@ export default {
             const result = rootState.repository.result;
             const currentRepository = rootState.entities.repositories[result];
             if(
-                currentRepository.issues &&
-                currentRepository.issues.nodes.length &&
+                currentRepository &&
+                currentRepository.labels &&
+                currentRepository.labels.nodes.length &&
                 currentRepository.milestones &&
                 currentRepository.milestones.nodes.length
             ) {

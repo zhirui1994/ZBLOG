@@ -95,10 +95,12 @@ const mapState = createSelector(
         const currentRepository = repositoriesMap[result];
         if (
             currentRepository &&
-            currentRepository.issues.nodes &&
+            currentRepository.labels &&
+            currentRepository.labels.nodes &&
+            currentRepository.milestones &&
             currentRepository.milestones.nodes
         ) {
-            labelsList = currentRepository.issues.nodes.map(id => labelsMap[id]);
+            labelsList = currentRepository.labels.nodes.map(id => labelsMap[id]);
             milestonesList = currentRepository.milestones.nodes.map(id => milestonesMap[id]);
         }
         return {
