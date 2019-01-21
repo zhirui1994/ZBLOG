@@ -277,7 +277,12 @@ export async function searchIssues(params) {
                         }
                     }
                 }
-            }`
+            }`,
+        },
+        {
+            headers: {
+                Authorization: `bearer ${getToken()}`
+            },
         }
     ).then(response => {
         const search = response && response.data && response.data.data && response.data.data.search;
