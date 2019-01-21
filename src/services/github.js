@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
 import config from '../commons/config';
-import { repository, comment as commentSchema } from '../commons/schemas';
+import { repository, comment as commentSchema, milestone } from '../commons/schemas';
 import getToken from '../utils/getToken';
 
 export async function initIndex() {
@@ -240,10 +240,20 @@ export async function initEditor() {
 }
 
 export async function searchIssues(params) {
+    let queryString = `repo:${config.owner}/${config.repo}+`;
+    if (params && params.milestone) {
+        queryString += `milestone:${params.milestone}+`;
+    }
+    if (params && params.labels && params.labels.length) {
+        queryString += params.labels.map(label => `label:${label}+`).join('');
+    }
+    if (params && params.query) {
+        queryString += `${params.query}+`
+    }
     return axios.post(
         'https://api.github.com/graphql',
         {
-            query: `search(type: ISSUE, last: 20, query: "${params.query ? `${params.query}+` : ''}repo:${config.owner}/${config.repo}+") {
+            query: `search(type: ISSUE, last: 20, query: "${queryString}") {
                 issueCount
                 pageInfo {
                     endCursor
