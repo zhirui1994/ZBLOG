@@ -1,11 +1,12 @@
 import React, { Suspense, lazy } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import Loading from '../components/Loading'
 
 const routerConfig = [
     {
         path: '/',
         exact: true,
-        component:  lazy(() => import('./Index')),
+        component: lazy(() => import('./Index')),
     },
     {
         path: '/editor',
@@ -22,14 +23,14 @@ const routerConfig = [
 const App = () => {
     return (
         <Router>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading loading={true} />}>
                 <Switch>
                     {routerConfig.map(route =>
                         (<Route
                             key={route.path}
                             path={route.path}
                             exact={route.exact}
-                            component={route.component}
+                            component={() => <route.component />}
                         />)
                     )}
                 </Switch>

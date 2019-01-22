@@ -6,7 +6,7 @@ const ArticlesList = (props) => {
     return (
         <div>
             {data.map(article => {
-                return <ArticleItem article={article} />
+                return <ArticleItem key={article.id} article={article} />
             })}
         </div>
     );
