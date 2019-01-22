@@ -126,7 +126,7 @@ class ArticlePage extends Component {
                                             href={getLoginAuthLink()}
                                         >
                                             {isUserLoading ? 
-                                                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                                                <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                                                 :
                                                 <img src={githubIconUrl} alt="This is commentor's avatar" />
                                             }

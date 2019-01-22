@@ -24,17 +24,21 @@ const ArticleItem = (props) => {
                 <span>
                     <i className="fa fa-tags" aria-hidden="true"></i>
                     {article.labels.nodes.map(label => {
-                        return (
-                            <span
-                                key={label.id}
-                                className={styles.articleLabel}
-                                style={{
-                                    background: `#${label.color}`,
-                                }}
-                            >
-                                {label.name}
-                            </span>
-                        )
+                        if (label) {
+                            return (
+                                <span
+                                    key={label.id}
+                                    className={styles.articleLabel}
+                                    style={{
+                                        background: `#${label.color}`,
+                                    }}
+                                >
+                                    {label.name}
+                                </span>
+                            )
+                        } else {
+                            return null;
+                        }
                     })}
                 </span>
             </p>
