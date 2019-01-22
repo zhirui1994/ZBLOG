@@ -1,12 +1,26 @@
 .container {
     margin: 0 auto;
     .header {
-        height: 30px;
-        line-height: 30px;
         overflow: hidden;
+        .top {
+            overflow: hidden;
+            * {
+                float: left;
+            }
+            img {
+                height: 35px;
+                width: 35px;
+                margin-left: 20px;
+                margin-top: 5px;
+                margin-right: 10px;
+            }
+        }
         nav {
             width: 800px;
             margin: 0 auto;
+            overflow: hidden;
+            line-height: 30px;
+            height: 30px;
             &::after {
                 content: "";
                 display: block;

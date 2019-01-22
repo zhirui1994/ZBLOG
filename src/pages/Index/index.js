@@ -4,7 +4,8 @@ import { createSelector } from 'reselect';
 import Loading from '../../components/Loading'
 import ArticlesList from '../../components/ArticlesList';
 import CategoriesNavigator from '../../components/CategoriesNavigator';
-import styles from './style.module.scss'
+import styles from './style.module.scss';
+import logoUrl from './Blog_48px.png';
 
 const DEFAULT_MILESTONE = {
     title: '最新',
@@ -41,6 +42,10 @@ class IndexPage extends Component {
             <Loading loading={loading}>
                 <div className={styles.container}>
                     <header className={styles.header}>
+                        <div className={styles.top}>
+                            <img alt="网站Logo" src={logoUrl} />
+                            <h1>Roy Zhi's Blog</h1>
+                        </div>
                         <CategoriesNavigator
                             data={milestonesList}
                             defaultCategory={DEFAULT_MILESTONE}
