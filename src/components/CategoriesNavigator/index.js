@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
-import styles from 'style.module.scss';
+import styles from './style.module.scss';
 
 class CategoriesNavgator extends PureComponent {
     state = {
