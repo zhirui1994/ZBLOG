@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { createSelector } from 'reselect';
 import Loading from '../../components/Loading'
 import ArticlesList from '../../components/ArticlesList';
+import CategoriesNavigator from '../../components/CategoriesNavigator';
 import styles from './style.module.scss'
 
 const DEFAULT_MILESTONE = {
     title: '最新',
     id: 'default_milestone'
 }
+
 const DEFAULT_ISSUES_OBJ = {
     nodes: [],
-    pageInfo: {
-
-    },
+    pageInfo: {},
     totalCount: 0,
 }
 
 class IndexPage extends Component {
-    state = {
-        activeMilestone: DEFAULT_MILESTONE,
-    };
-
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch.repository.initIndex();
@@ -30,9 +25,6 @@ class IndexPage extends Component {
 
     handleCategoryClick = (category) => {
         const { dispatch } = this.props;
-        this.setState({
-            activeMilestone: category,
-        });
         const title = category.id === DEFAULT_MILESTONE.id ? '*' : category.title;
         dispatch.repository.searchIssues({
             milestone: title,
@@ -40,7 +32,6 @@ class IndexPage extends Component {
     }
 
     render() {
-        const { activeMilestone } = this.state;
         const {
             loading,
             issuesList,
@@ -50,25 +41,11 @@ class IndexPage extends Component {
             <Loading loading={loading}>
                 <div className={styles.container}>
                     <header className={styles.header}>
-                    <nav>
-                        {milestonesList.map(milestone => {
-                            return (
-                                <span
-                                    onClick={() => this.handleCategoryClick(milestone)}
-                                    key={milestone.id}
-                                    className={classNames(
-                                        styles.navItem,
-                                        {
-                                            [styles.active]:
-                                                milestone.title === activeMilestone.title,
-                                        },
-                                    )}
-                                >
-                                    {milestone.title}
-                                </span>
-                            )
-                        })}
-                    </nav>
+                        <CategoriesNavigator
+                            data={milestonesList}
+                            defaultCategory={DEFAULT_MILESTONE}
+                            onCategoryClick={this.handleCategoryClick}
+                        />
                     </header>
                     <main className={styles.articlesContainer}>
                         <ArticlesList data={issuesList} />

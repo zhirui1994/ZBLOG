@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
-import styles from './style.scss';
+import styles from './style.module.scss';
 
 const ArticleItem = (props) => {
     const { article } = props;
