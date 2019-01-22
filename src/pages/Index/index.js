@@ -19,12 +19,7 @@ const DEFAULT_ISSUES_OBJ = {
 }
 
 class IndexPage extends Component {
-    constructor(...args) {
-        super(args);
-        this.state = {
-            activeMilestone: DEFAULT_MILESTONE
-        }
-    }
+    activeMilestone = DEFAULT_MILESTONE;
 
     componentDidMount() {
         const { dispatch } = this.props;
