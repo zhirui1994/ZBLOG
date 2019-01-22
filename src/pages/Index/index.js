@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import moment from 'moment';
 import { createSelector } from 'reselect';
-import { NavLink } from 'react-router-dom';
 import Loading from '../../components/Loading'
+import ArticlesList from '../../components/ArticlesList';
 import styles from './style.module.scss'
 
 const DEFAULT_MILESTONE = {
@@ -49,8 +48,6 @@ class IndexPage extends Component {
             loading,
             issuesList,
             milestonesList,
-            milestonesMap,
-            labelsMap,
         } = this.props;
         return (
             <Loading loading={loading}>
@@ -77,42 +74,7 @@ class IndexPage extends Component {
                     </nav>
                     </header>
                     <main className={styles.articlesContainer}>
-                        {issuesList.map(issue => {
-                            return (
-                                <article className={styles.article} key={issue.id}>
-                                    <NavLink to={`/article/${issue.number}`}>
-                                        <h3 className={styles.articleTitle}>{issue.title}</h3>
-                                    </NavLink>
-                                    <p className={styles.articleInfo}>
-                                        <span>
-                                            <i className="fa fa-calendar" aria-hidden="true"></i>
-                                            {moment(issue.createdAt).format('YYYY-MM-DD')}
-                                        </span>
-                                        <span>
-                                            <i className="fa fa-th-list" aria-hidden="true"></i>
-                                            <span className={styles.articleCategory}>{milestonesMap[issue.milestone].title}</span>
-                                        </span>
-                                        <span>
-                                            <i className="fa fa-tags" aria-hidden="true"></i>
-                                            {issue.labels.nodes.map(id => {
-                                                const label = labelsMap[id]
-                                                return (
-                                                    <span
-                                                        key={label.id}
-                                                        className={styles.articleLabel}
-                                                        style={{
-                                                            background: `#${label.color}`,
-                                                        }}
-                                                    >
-                                                        {label.name}
-                                                    </span>
-                                                )
-                                            })}
-                                        </span>
-                                    </p>
-                                </article>
-                            )
-                        })}
+                        <ArticlesList data={issuesList} />
                     </main>
                 </div>
             </Loading>
@@ -136,23 +98,29 @@ const mapState = createSelector(
         issuesMap,
         milestonesMap,
         labelsMap,
-        searchParams
     ) => {
         const repository = repositoriesMap[result];
         const milestonesList = Object.keys(milestonesMap).map(id => milestonesMap[id]);
         if (milestonesList.length) {
             milestonesList.unshift(DEFAULT_MILESTONE);
         }
+        let issuesList = [];
         let issuesObj = DEFAULT_ISSUES_OBJ;
         if (repository && repository.issues && repository.issues.nodes) {
             issuesObj = repository.issues;
+            issuesList = issuesObj.nodes.map((id) => {
+                const issue = issuesMap[id];
+                issue.milestone = milestonesMap[issue.milestone];
+                if (issue.labels && issue.labels.nodes) {
+                    issue.labels.nodes = issue.labels.nodes.map(id => labelsMap[id]);
+                }
+                return issue;
+            })
         }
         return {
             loading,
-            labelsMap,
-            milestonesMap,
+            issuesList,
             milestonesList,
-            issuesList: issuesObj.nodes.map(id => issuesMap[id]),
             pageInfo: issuesObj.pageInfo,
             totalCount: issuesObj.totalCount,
         }
