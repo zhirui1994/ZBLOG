@@ -19,7 +19,7 @@ class CategoriesNavgator extends PureComponent {
         const { data } = this.props;
         const { activeCategory } = this.state;
         return (
-            <nav>
+            <nav className={styles.navContainer}>
                 {data.map(category => {
                     return (
                         <span

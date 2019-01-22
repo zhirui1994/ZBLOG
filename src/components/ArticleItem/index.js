@@ -8,7 +8,7 @@ const ArticleItem = (props) => {
     return (
         <article className={styles.article} key={article.id}>
             <NavLink to={`/article/${article.number}`}>
-                <h3 className={styles.articleTitle}>{article.title}</h3>
+                <h3 title={article.title} className={styles.articleTitle}>{article.title}</h3>
             </NavLink>
             <p className={styles.articleInfo}>
                 <span>

@@ -1,14 +1,23 @@
 .article {
     padding: 5px 10px;
+    border-bottom: 1px solid #eee;
+    a {
+        text-decoration: none;
+    }
     &:hover {
-        box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
         .articleTitle {
-            font-size: 30px;
+            color: rgb(9, 119, 245);
         }
     }
     .articleTitle {
         font-size: 24px;
         cursor: pointer;
+        color: #000;
+        text-overflow: ellipsis;
+        word-wrap: none;
+        white-space: nowrap;
+        width: 80%;
+        overflow: hidden;
     }
     .articleInfo {
         >span {

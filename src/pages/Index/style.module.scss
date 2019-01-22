@@ -1,14 +1,36 @@
 .container {
-    width: 800px;
     margin: 0 auto;
-}
-
-.header {
-    height: 30px;
-    line-height: 30px;
-    overflow: hidden;
-}
-
-.articlesContainer {
-    padding: 20px 0;
+    .header {
+        height: 30px;
+        line-height: 30px;
+        overflow: hidden;
+        nav {
+            width: 800px;
+            margin: 0 auto;
+            &::after {
+                content: "";
+                display: block;
+                height: 1px;
+                width: 100%;
+                position: absolute;
+                background: #aaa;
+                left: 0;
+            }
+            &::before {
+                content: "";
+                display: block;
+                height: 1px;
+                width: 100%;
+                position: absolute;
+                background: #aaa;
+                left: 0;
+            }
+        }
+    }
+    
+    .articlesContainer {
+        padding: 20px 0;
+        width: 800px;
+        margin: 0 auto;
+    }
 }
