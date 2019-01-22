@@ -1,40 +1,39 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import IndexPage from './Index';
-import EditorPage from './Editor';
-import ArticlePage from './Article';
 
 const routerConfig = [
     {
         path: '/',
         exact: true,
-        component: IndexPage,
+        component:  lazy(() => import('./Index')),
     },
     {
         path: '/editor',
         exact: true,
-        component: EditorPage,
+        component: lazy(() => import('./Editor')),
     },
     {
         path: '/article/:number',
         exact: true,
-        component: ArticlePage,
+        component: lazy(() => import('./Article')),
     }
 ];
 
 const App = () => {
     return (
         <Router>
-            <Switch>
-                {routerConfig.map(route =>
-                    (<Route
-                        key={route.path}
-                        path={route.path}
-                        exact={route.exact}
-                        component={route.component}
-                    />)
-                )}
-            </Switch>
+            <Suspense fallback={<div>Loading...</div>}>
+                <Switch>
+                    {routerConfig.map(route =>
+                        (<Route
+                            key={route.path}
+                            path={route.path}
+                            exact={route.exact}
+                            component={route.component}
+                        />)
+                    )}
+                </Switch>
+            </Suspense>
         </Router>
     );
 }
