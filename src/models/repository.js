@@ -132,6 +132,20 @@ export default {
                     }
                 });
             }
-        }
+        },
+        async editIssue(payload, rootState) {
+            const response =  await githubServices.editIssue(payload);
+            if (response && response.result) {
+                const currentRepository = rootState.entities.repositories[rootState.repository.result];
+                currentRepository.issue = response.result;
+                await dispatch.entities.update({
+                    ...response.entities,
+                    repositories: {
+                        [rootState.repository.result]: currentRepository,
+                    }
+                });
+                typeof payload.callback === 'function' && payload.callback(`/alticle/${response.entities.issues[response.result].number}`)
+            }
+        },
     })
 }

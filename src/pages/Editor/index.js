@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import MarkdownPreviewer from '../../components/MarkdownPreviewer';
@@ -54,12 +55,15 @@ class EditorPage extends Component {
         e.stopPropagation();
         const { dispatch, currentRepositoryId } = this.props;
         if (this.title && this.content) {
-            dispatch.repository.createIssue({
+            dispatch.repository.editIssue({
                 title: this.title.value,
                 body: this.content,
                 labels: this.labels,
                 milestone: this.milestone,
                 repositoryId: currentRepositoryId,
+                callback: (url) => {
+                    this.props.history.push(url)
+                }
             })
         }
     }
@@ -82,7 +86,7 @@ class EditorPage extends Component {
                         {milestonesList.map(milestone => {
                             return (
                                 <label key={milestone.id} className={styles.checkLabel}>
-                                    <input onChange={this.handleRadioChange} type="radio" name="categories" value={milestone.id} />
+                                    <input onChange={this.handleRadioChange} type="radio" name="categories" value={milestone.number} />
                                     {milestone.title}
                                 </label>
                             );
@@ -93,7 +97,7 @@ class EditorPage extends Component {
                         {labelsList.map(label => {
                             return (
                                 <label key={label.id} className={styles.checkLabel}>
-                                    <input onChange={this.handleCheckboxChange} type="checkbox" name={`label-${label.name}`} value={label.id}/>
+                                    <input onChange={this.handleCheckboxChange} type="checkbox" name={`label-${label.name}`} value={label.name}/>
                                     {label.name}
                                 </label>
                             );
@@ -147,4 +151,4 @@ const mapState = createSelector(
     }
 )
 
-export default connect(mapState)(EditorPage);
+export default connect(mapState)(withRouter(EditorPage));

@@ -303,61 +303,64 @@ export async function searchIssues(params) {
 
 
 export async function createIssue(params) {
-    return axios.post('https://api.github.com/graphql',
+    return axios.post(`https://api.github.com/repos/${config.owner}/${config.repo}/issues`,
     {
-        query: `mutation {
-            createIssue(input: {
-                title: "${params.title}",
-                body: "${params.body}",
-                labelIds: "${JSON.stringify(params.labels)}",
-                milestoneId: "${params.milestone}",
-                repositoryId: "${params.repository}"
-            }) {
-                clientMutationId
-                issue {
-                    id,
-                    title,
-                    number,
-                    bodyHTML,
-                    createdAt,
-                    milestone {
-                        id,
-                        number,
-                        state,
-                        title,
-                    },
-                    labels(first:100) {
-                        nodes {
-                            id,
-                            name,
-                            color,
-                        }
-                    },
-                    comments(last: 20) {
-                        nodes {
-                            id,
-                            author {
-                                avatarUrl,
-                                login,
-                                url,
-                            },
-                            bodyHTML,
-                            createdAt,
-                        }
-                    }
-                }
-            }
-        }`,
+        title: params.title,
+        body: params.body,
+        milestone: params.milestone,
+        labels: params.labels,
     },
     {
         headers: {
-            Authorization: `bearer ${getToken()}`
+            Authorization: `token ${getToken()}`
         },
     }).then(response => {
-        const issue = response && response.data && response.data.data
-            && response.data.data.createIssue.issue;
-
+        const issue = response && response.data
         if (issue) {
+            issue.id = issue.node_id;
+            issue.labels = {
+                nodes: issue.labels.map(label => {
+                    label.id = label.node_id;
+                    return label;
+                })
+            };
+            issue.milestone.id = issue.milestone.node_id;
+            issue.comments = {
+                nodes: []
+            };
+            return normalize(issue, issueSchema);
+        }
+    })
+}
+
+export async function editIssue(params) {
+    return axios.patch(
+        `https://api.github.com/repos/${config.owner}/${config.repo}/issues/${params.number}`,
+        {
+            title: params.title,
+            body: params.body,
+            milestone: params.milestone,
+            labels: params.labels
+        },
+        {
+            headers: {
+                Authorization: `token ${getToken()}`
+            },
+        }
+    ).then(response => {
+        const issue = response && response.data
+        if (issue) {
+            issue.id = issue.node_id;
+            issue.labels = {
+                nodes: issue.labels.map(label => {
+                    label.id = label.node_id;
+                    return label;
+                })
+            };
+            issue.milestone.id = issue.milestone.node_id;
+            issue.comments = {
+                nodes: []
+            };
             return normalize(issue, issueSchema);
         }
     })

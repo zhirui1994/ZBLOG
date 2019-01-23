@@ -12,6 +12,7 @@ export const issue = new schema.Entity('issues', {
         nodes:[comment]
     },
 });
+
 export const repository = new schema.Entity('repositories', {
     issue,
     issues: {
