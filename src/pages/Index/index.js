@@ -88,10 +88,14 @@ const mapState = createSelector(
         if (repository && repository.issues && repository.issues.nodes) {
             issuesObj = repository.issues;
             issuesList = issuesObj.nodes.map((id) => {
-                const issue = issuesMap[id];
+                // 引用类型，会直接修改store中的数，千万要避免
+                const issue = Object.create(issuesMap[id]);
                 issue.milestone = milestonesMap[issue.milestone];
                 if (issue.labels && issue.labels.nodes) {
-                    issue.labels.nodes = issue.labels.nodes.map(id => labelsMap[id]);
+                    issue.labels = {
+                        ...issue.labels,
+                        nodes: issue.labels.nodes.map(id => labelsMap[id]),
+                    }
                 }
                 return issue;
             })
