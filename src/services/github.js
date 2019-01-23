@@ -26,7 +26,7 @@ export async function initIndex() {
                             title,
                         }
                     },
-                    issues(last:20, states:OPEN) {
+                    issues(last:20, states:OPEN, orderBy: {direction: DESC, field: UPDATED_AT}) {
                         pageInfo {
                             endCursor,
                             startCursor,
