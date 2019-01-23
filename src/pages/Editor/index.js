@@ -6,8 +6,10 @@ import MarkdownPreviewer from '../../components/MarkdownPreviewer';
 import styles from './style.module.scss';
 
 class EditorPage extends Component {
-    content = undefined;
-    title = undefined;
+    content = '';
+    title = '';
+    milestone = '';
+    labels = [];
 
     componentDidMount() {
         const { labelsList, milestonesList, dispatch } = this.props;
@@ -22,19 +24,42 @@ class EditorPage extends Component {
 
     handleRadioChange = (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        const input = e.target;
+        if (input.checked) {
+            this.milestone = input.value;
+        } else {
+            this.milestone = '';
+        }
     }
 
     handleCheckboxChange = (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        const input = e.target;
+        const idx = this.labels.indexOf(input.value);
+        if (input.checked) {
+            if (idx === -1) {
+                this.labels.push(input.value);
+            }
+        } else {
+            if (idx !== -1) {
+                this.labels.splice(idx, 1);
+            }
+        }
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const { dispatch } = this.props;
+        e.stopPropagation();
+        const { dispatch, currentRepositoryId } = this.props;
         if (this.title && this.content) {
             dispatch.repository.createIssue({
                 title: this.title.value,
                 body: this.content,
+                labels: this.labels,
+                milestone: this.milestone,
+                repositoryId: currentRepositoryId,
             })
         }
     }
@@ -56,7 +81,7 @@ class EditorPage extends Component {
                         分类：
                         {milestonesList.map(milestone => {
                             return (
-                                <label className={styles.checkLabel}>
+                                <label key={milestone.id} className={styles.checkLabel}>
                                     <input onChange={this.handleRadioChange} type="radio" name="categories" value={milestone.id} />
                                     {milestone.title}
                                 </label>
@@ -67,7 +92,7 @@ class EditorPage extends Component {
                         标签：
                         {labelsList.map(label => {
                             return (
-                                <label className={styles.checkLabel}>
+                                <label key={label.id} className={styles.checkLabel}>
                                     <input onChange={this.handleCheckboxChange} type="checkbox" name={`label-${label.name}`} value={label.id}/>
                                     {label.name}
                                 </label>
@@ -101,6 +126,7 @@ const mapState = createSelector(
         milestonesMap
     ) => {
         let labelsList = [], milestonesList = [];
+        const currentRepositoryId = result;
         const currentRepository = repositoriesMap[result];
         if (
             currentRepository &&
@@ -116,6 +142,7 @@ const mapState = createSelector(
             loading,
             labelsList,
             milestonesList,
+            currentRepositoryId,
         }
     }
 )
