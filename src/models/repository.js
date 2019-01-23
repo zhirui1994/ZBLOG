@@ -144,7 +144,7 @@ export default {
                         [rootState.repository.result]: currentRepository,
                     }
                 });
-                typeof payload.callback === 'function' && payload.callback(`/alticle/${response.entities.issues[response.result].number}`)
+                typeof payload.callback === 'function' && payload.callback(`/article/${response.entities.issues[response.result].number}`)
             }
         },
     })

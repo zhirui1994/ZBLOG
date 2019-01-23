@@ -61,6 +61,7 @@ class EditorPage extends Component {
                 labels: this.labels,
                 milestone: this.milestone,
                 repositoryId: currentRepositoryId,
+                number: 8,
                 callback: (url) => {
                     this.props.history.push(url)
                 }
