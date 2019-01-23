@@ -7,6 +7,7 @@ import styles from './style.module.scss';
 
 class EditorPage extends Component {
     content = undefined;
+    title = undefined;
 
     componentDidMount() {
         const { labelsList, milestonesList, dispatch } = this.props;
@@ -19,11 +20,19 @@ class EditorPage extends Component {
         this.content = value;
     }
 
+    handleRadioChange = (e) => {
+        e.preventDefault();
+    }
+
+    handleCheckboxChange = (e) => {
+        e.preventDefault();
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         const { dispatch } = this.props;
         if (this.title && this.content) {
-            dispatch.issues.create({
+            dispatch.repository.createIssue({
                 title: this.title.value,
                 body: this.content,
             })
@@ -48,7 +57,7 @@ class EditorPage extends Component {
                         {milestonesList.map(milestone => {
                             return (
                                 <label className={styles.checkLabel}>
-                                    <input type="radio" name="categories" value={milestone.id} />
+                                    <input onChange={this.handleRadioChange} type="radio" name="categories" value={milestone.id} />
                                     {milestone.title}
                                 </label>
                             );
@@ -59,7 +68,7 @@ class EditorPage extends Component {
                         {labelsList.map(label => {
                             return (
                                 <label className={styles.checkLabel}>
-                                    <input type="checkbox" name={`label-${label.name}`} value={label.id}/>
+                                    <input onChange={this.handleCheckboxChange} type="checkbox" name={`label-${label.name}`} value={label.id}/>
                                     {label.name}
                                 </label>
                             );

@@ -119,6 +119,19 @@ export default {
                     })
                 }
             }
+        },
+        async createIssue(payload, rootState) {
+            const response =  await githubServices.createIssue(payload);
+            if (response && response.result) {
+                const currentRepository = rootState.entities.repositories[rootState.repository.result];
+                currentRepository.issue = response.result;
+                await dispatch.entities.update({
+                    ...response.entities,
+                    repositories: {
+                        [rootState.repository.result]: currentRepository,
+                    }
+                });
+            }
         }
     })
 }

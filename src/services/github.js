@@ -300,3 +300,65 @@ export async function searchIssues(params) {
         }
     });
 }
+
+
+export async function createIssue(params) {
+    return axios.post('https://api.github.com/graphql',
+    {
+        query: `mutation {
+            createIssue(input: {
+                title: "${params.title}",
+                body: "${params.body}",
+                labelIds: "${JSON.stringify(params.labels)}",
+                milestoneId: "${params.milestone}",
+                repositoryId: "${params.repository}"
+            }) {
+                clientMutationId
+                issue {
+                    id,
+                    title,
+                    number,
+                    bodyHTML,
+                    createdAt,
+                    milestone {
+                        id,
+                        number,
+                        state,
+                        title,
+                    },
+                    labels(first:100) {
+                        nodes {
+                            id,
+                            name,
+                            color,
+                        }
+                    },
+                    comments(last: 20) {
+                        nodes {
+                            id,
+                            author {
+                                avatarUrl,
+                                login,
+                                url,
+                            },
+                            bodyHTML,
+                            createdAt,
+                        }
+                    }
+                }
+            }
+        }`,
+    },
+    {
+        headers: {
+            Authorization: `bearer ${getToken()}`
+        },
+    }).then(response => {
+        const issue = response && response.data && response.data.data
+            && response.data.data.createIssue.issue;
+
+        if (issue) {
+            return normalize(issue, issueSchema);
+        }
+    })
+}
