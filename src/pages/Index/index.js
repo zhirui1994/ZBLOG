@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import Loading from '../../components/Loading'
 import ArticlesList from '../../components/ArticlesList';
 import CategoriesNavigator from '../../components/CategoriesNavigator';
+import { getLoginAuthLink } from '../../services/github';
 import styles from './style.module.scss';
 import logoUrl from './Blog_48px.png';
 
@@ -45,6 +46,10 @@ class IndexPage extends Component {
                         <div className={styles.top}>
                             <img alt="网站Logo" src={logoUrl} />
                             <h1>Roy Zhi's Blog</h1>
+                            <div className={styles.right}>
+                                <input type="search" placeholder="请输入关键字搜索" />
+                                <a href={getLoginAuthLink()}>登陆</a>
+                            </div>
                         </div>
                         <CategoriesNavigator
                             data={milestonesList}
