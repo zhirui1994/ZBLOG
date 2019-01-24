@@ -62,7 +62,7 @@ export default {
                 await dispatch.entities.update(newEntities);
             }
         },
-        async initEditor(_, rootState) {
+        async initEditor(number, rootState) {
             const result = rootState.repository.result;
             const currentRepository = rootState.entities.repositories[result];
             if(
@@ -79,7 +79,7 @@ export default {
                     loading: true,
                 });
             }
-            const response = await githubServices.initEditor()
+            const response = await githubServices.initEditor(number)
             if (response) {
                 await dispatch.entities.update(response.entities);
                 await dispatch.repository.update({

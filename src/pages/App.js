@@ -14,6 +14,11 @@ const routerConfig = [
         component: lazy(() => import('./Editor')),
     },
     {
+        path: '/editor/:number',
+        exact: true,
+        component: lazy(() => import('./Editor')),
+    },
+    {
         path: '/article/:number',
         exact: true,
         component: lazy(() => import('./Article')),
