@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
+import { isLight } from '../../utils/color';
 import styles from './style.module.scss';
 
 const ArticleItem = (props) => {
@@ -31,6 +32,7 @@ const ArticleItem = (props) => {
                                     className={styles.articleLabel}
                                     style={{
                                         background: `#${label.color}`,
+                                        color: isLight(label.color) ? '#000' : '#fff',
                                     }}
                                 >
                                     {label.name}
