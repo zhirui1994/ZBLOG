@@ -68,10 +68,10 @@ class EditorPage extends PureComponent {
     }
 
     handleRadioClick = (e) => {
-        e.preventDefault();
         e.stopPropagation();
         let input;
         if (e.target.tagName === 'LABEL') {
+            e.preventDefault();
             input = e.target.querySelector('input');
         } else if (e.target.tagName === 'INPUT') {
             input = e.target;
@@ -92,10 +92,10 @@ class EditorPage extends PureComponent {
     }
 
     handleCheckboxClick = (e) => {
-        e.preventDefault();
         e.stopPropagation();
         let input;
         if (e.target.tagName === 'LABEL') {
+            e.preventDefault();
             input = e.target.querySelector('input');
         } else if (e.target.tagName === 'INPUT') {
             input = e.target;
@@ -157,7 +157,7 @@ class EditorPage extends PureComponent {
             <main>
                 <form>
                     <label className={styles.fileds} htmlFor="title">标题：
-                        <input defaultValue={this.state.title} ref={input => this.title = input} type="text" id="title" />
+                        <input className={styles.titleInput} defaultValue={this.state.title} ref={input => this.title = input} type="text" id="title" />
                     </label>
                     <label className={classNames(styles.fileds, styles.editorContent)} htmlFor="editor">内容：
                         <MarkdownPreviewer
@@ -179,7 +179,6 @@ class EditorPage extends PureComponent {
                                         name="categories"
                                         value={milestone.number}
                                         checked={this.state.milestone === milestone.number}
-                                        onClick={this.handleRadioClick}
                                     />
                                     {milestone.title}
                                 </label>
@@ -200,7 +199,6 @@ class EditorPage extends PureComponent {
                                         value={label.name}
                                         name={`label-${label.name}`}
                                         checked={this.state.labels.indexOf(label.name) !== -1}
-                                        onClick={this.handleCheckboxClick}
                                     />
                                     {label.name}
                                 </label>

@@ -12,6 +12,14 @@
         form {
             height: 100%
         }
+        .titleInput {
+            appearance: none;
+            border: none;
+            border-bottom: 1px solid #999;
+            height: 30px;
+            width: calc(100% - 70px);
+            padding-left: 10px;
+        }
         label {
             padding-bottom: 5px;
             padding-left: 15px;
