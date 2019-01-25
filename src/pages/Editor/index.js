@@ -12,7 +12,7 @@ class EditorPage extends PureComponent {
     state = {
         title: '',
         content: '',
-        milestone: '',
+        milestone: void(0),
         labels: [],
     }
 
@@ -70,45 +70,53 @@ class EditorPage extends PureComponent {
     handleRadioClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const label = e.currentTarget;
         let input;
-        if (label && (input = label.querySelector('input')) && input) {
-            if (input.checked) {
+        if (e.target.tagName === 'LABEL') {
+            input = e.target.querySelector('input');
+        } else if (e.target.tagName === 'INPUT') {
+            input = e.target;
+        }
+        if (input) {
+            const value = +input.value;
+            if (this.state.milestone === value) {
                 this.setState({
-                    milestone: '',
+                    milestone: void(0),
                 });
             } else {
                 this.setState({
-                    milestone: input.value,
+                    milestone: value,
                 });
             }
         }
+        return false;
     }
 
     handleCheckboxClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const label = e.currentTarget;
         let input;
-        if (label && (input = label.querySelector('input')) && input) {
+        if (e.target.tagName === 'LABEL') {
+            input = e.target.querySelector('input');
+        } else if (e.target.tagName === 'INPUT') {
+            input = e.target;
+        }
+        if (input) {
             const labels = this.state.labels;
-            const idx = labels.indexOf(input.value);
-            if (input.checked) {
-                if (idx !== -1) {
-                    labels.splice(idx, 1);
-                    this.setState({
-                        labels: [...labels],
-                    });
-                }
+            const value = input.value;
+            const idx = labels.indexOf(value);
+            if (idx !== -1) {
+                labels.splice(idx, 1);
+                this.setState({
+                    labels: [...labels],
+                });
             } else {
-                if (idx === -1) {
-                    labels.push(idx, 1);
-                    this.setState({
-                        labels: [...labels],
-                    });
-                }
+                labels.push(value);
+                this.setState({
+                    labels: [...labels],
+                });
             }
         }
+        return false;
     }
 
     handleSubmit = (e) => {
@@ -171,6 +179,7 @@ class EditorPage extends PureComponent {
                                         name="categories"
                                         value={milestone.number}
                                         checked={this.state.milestone === milestone.number}
+                                        onClick={this.handleRadioClick}
                                     />
                                     {milestone.title}
                                 </label>
@@ -191,6 +200,7 @@ class EditorPage extends PureComponent {
                                         value={label.name}
                                         name={`label-${label.name}`}
                                         checked={this.state.labels.indexOf(label.name) !== -1}
+                                        onClick={this.handleCheckboxClick}
                                     />
                                     {label.name}
                                 </label>

@@ -16,6 +16,9 @@
             padding-bottom: 5px;
             padding-left: 15px;
         }
+        input[type=radio], input[type=checkbox] {
+            cursor: pointer;
+        }
         .fileds {
             display: block;
         }
