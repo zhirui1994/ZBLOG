@@ -11,7 +11,7 @@ import styles from './style.module.scss';
 class EditorPage extends PureComponent {
     state = {
         title: '',
-        content: '',
+        body: '',
         milestone: void(0),
         labels: [],
     }
@@ -33,7 +33,7 @@ class EditorPage extends PureComponent {
             currentIssue !== prevCurrentIssue
         ) {
             const title = currentIssue.title || '';
-            const content = currentIssue.body || '';
+            const body = currentIssue.body || '';
             const milestone = milestonesMap[currentIssue.milestone].number || '';
             const labels = (currentIssue.labels
                 && currentIssue.labels.nodes
@@ -44,7 +44,7 @@ class EditorPage extends PureComponent {
             return {
                 prevCurrentIssue: currentIssue,
                 title,
-                content,
+                body,
                 milestone,
                 labels,
             }
@@ -63,7 +63,7 @@ class EditorPage extends PureComponent {
 
     handleChange = (value) => {
         this.setState({
-            content: value,
+            body: value,
         });
     }
 
@@ -123,17 +123,18 @@ class EditorPage extends PureComponent {
         e.preventDefault();
         e.stopPropagation();
         const { dispatch } = this.props;
-        const number = this.number;
-        if (this.title && this.content) {
+        const { title, body, milestone, labels } = this.state; 
+        if (title && body && milestone && labels) {
             const params = {
-                title: this.title.value,
-                body: this.content,
-                labels: this.labels,
-                milestone: this.milestone,
+                title,
+                body,
+                labels,
+                milestone,
                 callback: (url) => {
                     this.props.history.push(url)
                 }
             };
+            const number = this.number;
             if (number) {
                 dispatch.repository.editIssue({
                     ...params,
@@ -161,7 +162,7 @@ class EditorPage extends PureComponent {
                     </label>
                     <label className={classNames(styles.fileds, styles.editorContent)} htmlFor="editor">内容：
                         <MarkdownPreviewer
-                            defaultValue={this.state.content}
+                            defaultValue={this.state.body}
                             onChange={this.handleChange}
                         />
                     </label>
