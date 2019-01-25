@@ -10,7 +10,7 @@
         }
     }
     .articleTitle {
-        font-size: 24px;
+        font-size: 18px;
         cursor: pointer;
         color: #000;
         text-overflow: ellipsis;
@@ -28,8 +28,9 @@
             .articleCategory {
                 background: #666;
                 color: white;
-                padding: 0 20px;
+                padding: 0 5px;
                 border-radius: 3px;
+                font-size: 14px;
                 &:hover {
                     cursor: pointer;
                 }
@@ -38,6 +39,7 @@
                 margin-left: 5px;
                 border-radius: 3px;
                 padding: 0 3px;
+                font-size: 14px;
                 &:hover {
                     cursor: pointer;
                 }
