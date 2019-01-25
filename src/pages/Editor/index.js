@@ -68,37 +68,41 @@ class EditorPage extends PureComponent {
     }
 
     handleRadioClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const label = e.currentTarget;
         let input;
         if (label && (input = label.querySelector('input')) && input) {
             if (input.checked) {
                 this.setState({
-                    milestone: input.value,
+                    milestone: '',
                 });
             } else {
                 this.setState({
-                    milestone: '',
+                    milestone: input.value,
                 });
             }
         }
     }
 
     handleCheckboxClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const label = e.currentTarget;
         let input;
         if (label && (input = label.querySelector('input')) && input) {
             const labels = this.state.labels;
             const idx = labels.indexOf(input.value);
             if (input.checked) {
-                if (idx === -1) {
-                    labels.push(input.value);
+                if (idx !== -1) {
+                    labels.splice(idx, 1);
                     this.setState({
                         labels: [...labels],
                     });
                 }
             } else {
-                if (idx !== -1) {
-                    labels.splice(idx, 1);
+                if (idx === -1) {
+                    labels.push(idx, 1);
                     this.setState({
                         labels: [...labels],
                     });
