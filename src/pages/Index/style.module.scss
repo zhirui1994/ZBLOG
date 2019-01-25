@@ -1,7 +1,12 @@
 .container {
     margin: 0 auto;
     .header {
+        background: #fff;
         overflow: hidden;
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: 0;
         .top {
             overflow: hidden;
             * {
@@ -50,6 +55,7 @@
                 position: absolute;
                 background: #aaa;
                 left: 0;
+                top: 45px;
             }
             &::before {
                 content: "";
@@ -59,6 +65,7 @@
                 position: absolute;
                 background: #aaa;
                 left: 0;
+                top: 74px;
             }
         }
     }
@@ -67,5 +74,6 @@
         padding: 20px 0;
         width: 800px;
         margin: 0 auto;
+        margin-top: 75px;
     }
 }
