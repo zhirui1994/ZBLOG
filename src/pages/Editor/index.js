@@ -166,7 +166,7 @@ class EditorPage extends PureComponent {
                                         type="radio"
                                         name="categories"
                                         value={milestone.number}
-                                        checked={this.state.milestone === milestone.id}
+                                        checked={this.state.milestone === milestone.number}
                                     />
                                     {milestone.title}
                                 </label>
