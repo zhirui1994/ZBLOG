@@ -16,9 +16,11 @@ class EditorPage extends PureComponent {
         labels: [],
     }
 
-    number = memoize((match) => {
-        return match.params.number;
-    });
+    get number() {
+        return memoize(
+            (match) => match.params.number
+        )(this.props.match);
+    }
 
     static getDerivedStateFromProps(props, state) {
         const { match, currentIssue, milestonesMap, labelsMap } = props;
