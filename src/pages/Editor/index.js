@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+import memoize from 'memoize-one';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -7,24 +8,46 @@ import MarkdownPreviewer from '../../components/MarkdownPreviewer';
 import Loading from '../../components/Loading';
 import styles from './style.module.scss';
 
-class EditorPage extends Component {
-    content = '';
-    title = '';
-    milestone = '';
-    labels = [];
-
-    get number() {
-        const { match } = this.props;
-        return match.params.number;
+class EditorPage extends PureComponent {
+    state = {
+        title: '',
+        content: '',
+        milestone: '',
+        labels: [],
     }
 
-    get currentIssue() {
-        const { currentIssue } = this.props;
-        const number = this.number;
-        if (number && currentIssue && currentIssue.number === +number) {
-            return currentIssue
+    number = memoize((match) => {
+        return match.params.number;
+    });
+
+    static getDerivedStateFromProps(props, state) {
+        const { match, currentIssue, milestonesMap, labelsMap } = props;
+        const { prevCurrentIssue } = state;
+        const number = match.params.number;
+        if (
+            number &&
+            currentIssue &&
+            currentIssue.number === +number &&
+            currentIssue !== prevCurrentIssue
+        ) {
+            const title = currentIssue.title || '';
+            const content = currentIssue.body || '';
+            const milestone = milestonesMap[currentIssue.milestone].number || '';
+            const labels = (currentIssue.labels
+                && currentIssue.labels.nodes
+                && currentIssue.labels.nodes.map(id => {
+                    return labelsMap[id].name;
+                })) || [];
+
+            return {
+                prevCurrentIssue: currentIssue,
+                title,
+                content,
+                milestone,
+                labels,
+            }
         } else {
-            return {};
+            return null;
         }
     }
 
@@ -37,32 +60,47 @@ class EditorPage extends Component {
     }
 
     handleChange = (value) => {
-        this.content = value;
+        this.setState({
+            content: value,
+        });
     }
 
-    handleRadioChange = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const input = e.target;
-        if (input.checked) {
-            this.milestone = input.value;
-        } else {
-            this.milestone = '';
+    handleRadioClick = (e) => {
+        const label = e.currentTarget;
+        let input;
+        if (label && (input = label.querySelector('input')) && input) {
+            if (input.checked) {
+                this.setState({
+                    milestone: input.value,
+                });
+            } else {
+                this.setState({
+                    milestone: '',
+                });
+            }
         }
     }
 
-    handleCheckboxChange = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const input = e.target;
-        const idx = this.labels.indexOf(input.value);
-        if (input.checked) {
-            if (idx === -1) {
-                this.labels.push(input.value);
-            }
-        } else {
-            if (idx !== -1) {
-                this.labels.splice(idx, 1);
+    handleCheckboxClick = (e) => {
+        const label = e.currentTarget;
+        let input;
+        if (label && (input = label.querySelector('input')) && input) {
+            const labels = this.state.labels;
+            const idx = labels.indexOf(input.value);
+            if (input.checked) {
+                if (idx === -1) {
+                    labels.push(input.value);
+                    this.setState({
+                        labels: [...labels],
+                    });
+                }
+            } else {
+                if (idx !== -1) {
+                    labels.splice(idx, 1);
+                    this.setState({
+                        labels: [...labels],
+                    });
+                }
             }
         }
     }
@@ -95,7 +133,6 @@ class EditorPage extends Component {
 
     render() {
         const { labelsList, milestonesList, loading } = this.props;
-        const defaultValue = this.currentIssue.body;
         const number = this.number;
         return (
             <Loading loading={loading}>
@@ -106,11 +143,11 @@ class EditorPage extends Component {
             <main>
                 <form>
                     <label className={styles.fileds} htmlFor="title">标题：
-                        <input defaultValue={this.currentIssue.title} ref={input => this.title = input} type="text" id="title" />
+                        <input defaultValue={this.state.title} ref={input => this.title = input} type="text" id="title" />
                     </label>
                     <label className={classNames(styles.fileds, styles.editorContent)} htmlFor="editor">内容：
                         <MarkdownPreviewer
-                            defaultValue={defaultValue}
+                            defaultValue={this.state.content}
                             onChange={this.handleChange}
                         />
                     </label>
@@ -118,13 +155,16 @@ class EditorPage extends Component {
                         分类：
                         {milestonesList.map(milestone => {
                             return (
-                                <label key={milestone.id} className={styles.checkLabel}>
+                                <label
+                                    key={milestone.id}
+                                    className={styles.checkLabel}
+                                    onClick={this.handleRadioClick}
+                                >
                                     <input
                                         type="radio"
                                         name="categories"
                                         value={milestone.number}
-                                        onChange={this.handleRadioChange}
-                                        defaultChecked={this.currentIssue.milestone && this.currentIssue.milestone === milestone.id}
+                                        checked={this.state.milestone === milestone.id}
                                     />
                                     {milestone.title}
                                 </label>
@@ -135,20 +175,28 @@ class EditorPage extends Component {
                         标签：
                         {labelsList.map(label => {
                             return (
-                                <label key={label.id} className={styles.checkLabel}>
+                                <label
+                                    key={label.id}
+                                    className={styles.checkLabel}
+                                    onClick={this.handleCheckboxClick}
+                                >
                                     <input
                                         type="checkbox"
                                         value={label.name}
                                         name={`label-${label.name}`}
-                                        onChange={this.handleCheckboxChange}
-                                        defaultChecked={this.currentIssue.labels && this.currentIssue.labels.nodes.indexOf(label.id) !== -1}
+                                        checked={this.state.labels.indexOf(label.name) !== -1}
                                     />
                                     {label.name}
                                 </label>
                             );
                         })}
                     </label>
-                    <input className={styles.submitButton} onClick={this.handleSubmit} type="submit" value={number ? "修改" : "创建"} />
+                    <input
+                        type="submit"
+                        value={number ? "修改" : "创建"}
+                        className={styles.submitButton}
+                        onClick={this.handleSubmit}
+                    />
                 </form>
             </main>
             <footer>
@@ -195,7 +243,9 @@ const mapState = createSelector(
         }
         return {
             loading,
+            labelsMap,
             labelsList,
+            milestonesMap,
             milestonesList,
             currentIssue,
         }
