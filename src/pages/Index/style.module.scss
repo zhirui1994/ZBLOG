@@ -12,7 +12,7 @@
             * {
                 float: left;
             }
-            img {
+            >img {
                 height: 35px;
                 width: 35px;
                 margin-left: 20px;
@@ -74,5 +74,25 @@
         width: 800px;
         margin: 0 auto;
         margin-top: 75px;
+    }
+
+    .createCommentAvatar {
+        height: 35px;
+        width: 35px;
+        display: block;
+        border-radius: 5px;
+        float: left;
+        overflow: hidden;
+        margin: 5px;
+        margin-bottom: 0;
+        :global {
+            .fa.fa-circle-o-notch.fa-spin {
+                margin-top: 3px;
+                font-size: 30px;
+            }
+        }
+        img {
+            height: 100%;
+        }
     }
 }

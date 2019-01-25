@@ -25,6 +25,7 @@ class IndexPage extends Component {
     }
     componentDidMount() {
         const { dispatch } = this.props;
+        dispatch.user.getAuthToken();
         dispatch.repository.initIndex();
     }
 
@@ -56,8 +57,10 @@ class IndexPage extends Component {
 
     render() {
         const {
+            viewer,
             loading,
             issuesList,
+            isUserLoading,
             milestonesList,
         } = this.props;
         return (
@@ -74,7 +77,17 @@ class IndexPage extends Component {
                                     placeholder="请输入关键字搜索"
                                     onKeyDown={this.handleSearch}
                                 />
-                                <a href={getLoginAuthLink()}>登陆</a>
+                                {(viewer.id || isUserLoading)?
+                                    (<div className={styles.createCommentAvatar}>
+                                        {isUserLoading ? 
+                                            <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                                            :
+                                            <img src={viewer.avatarUrl} alt="This is commentor's avatar" />
+                                        }
+                                    </div>)
+                                    :
+                                    <a href={getLoginAuthLink()}>登陆</a>
+                                }
                             </div>
                         </div>
                         <CategoriesNavigator
@@ -100,6 +113,8 @@ const mapState = createSelector(
         store => store.entities.issues,
         store => store.entities.milestones,
         store => store.entities.labels,
+        store => store.user.viewer,
+        store => store.user.loading,
     ],
     (
         result,
@@ -108,6 +123,8 @@ const mapState = createSelector(
         issuesMap,
         milestonesMap,
         labelsMap,
+        viewer,
+        isUserLoading,
     ) => {
         const repository = repositoriesMap[result];
         const milestonesList = Object.keys(milestonesMap).map(id => milestonesMap[id]);
@@ -137,6 +154,8 @@ const mapState = createSelector(
             milestonesList,
             pageInfo: issuesObj.pageInfo,
             totalCount: issuesObj.totalCount,
+            viewer,
+            isUserLoading,
         }
     }
 )
