@@ -20,6 +20,9 @@ const DEFAULT_ISSUES_OBJ = {
 }
 
 class IndexPage extends Component {
+    state = {
+        currentCategory: null,
+    }
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch.repository.initIndex();
@@ -27,10 +30,28 @@ class IndexPage extends Component {
 
     handleCategoryClick = (category) => {
         const { dispatch } = this.props;
+        this.setState({
+            currentCategory: category,
+        });
         const title = category.id === DEFAULT_MILESTONE.id ? '*' : category.title;
         dispatch.repository.searchIssues({
             milestone: title,
         });
+    }
+
+    handleSearch = (e) => {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            e.preventDefault();
+            e.stopPropagation();
+            const query = this.search.value;
+            const { dispatch } = this.props;
+            const { currentCategory } = this.state;
+            const title = (!currentCategory || currentCategory.id === DEFAULT_MILESTONE.id) ? '*' : currentCategory.title;
+            dispatch.repository.searchIssues({
+                query,
+                milestone: title,
+            });
+        }
     }
 
     render() {
@@ -47,7 +68,12 @@ class IndexPage extends Component {
                             <img alt="网站Logo" src={logoUrl} />
                             <h1>Roy Zhi's Blog</h1>
                             <div className={styles.right}>
-                                <input type="search" placeholder="请输入关键字搜索" />
+                                <input
+                                    type="search"
+                                    ref={search => this.search = search}
+                                    placeholder="请输入关键字搜索"
+                                    onKeyDown={this.handleSearch}
+                                />
                                 <a href={getLoginAuthLink()}>登陆</a>
                             </div>
                         </div>

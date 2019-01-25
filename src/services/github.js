@@ -117,7 +117,7 @@ export async function getSingleIssue(number) {
 export function getLoginAuthLink() {
     const query = {
         scope: 'public_repo, user',
-        redirect_uri: encodeURIComponent(`https://zhirui1994.github.io/#/article/1`),
+        redirect_uri: encodeURIComponent(window.location.href),
         client_id: config.client_id,
     }
     const queryString = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');
