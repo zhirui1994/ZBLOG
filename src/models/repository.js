@@ -65,13 +65,17 @@ export default {
         async initEditor(number, rootState) {
             const result = rootState.repository.result;
             const currentRepository = rootState.entities.repositories[result];
-            if(
-                currentRepository &&
+            const hasLabelsAndMilestones = currentRepository &&
                 currentRepository.labels &&
                 currentRepository.labels.nodes.length &&
                 currentRepository.milestones &&
-                currentRepository.milestones.nodes.length
-            ) {
+                currentRepository.milestones.nodes.length;
+            const hasCurrentIssueBody = !number || (
+                currentRepository &&
+                currentRepository.issue &&
+                rootState.entities.issues[currentRepository.issue] &&
+                rootState.entities.issues[currentRepository.issue].body);
+            if (hasLabelsAndMilestones && hasCurrentIssueBody) {
                 return;
             }
             if (!rootState.repository.loading) {
@@ -79,7 +83,7 @@ export default {
                     loading: true,
                 });
             }
-            const response = await githubServices.initEditor(number)
+            const response = await githubServices.initEditor(number, hasLabelsAndMilestones)
             if (response) {
                 await dispatch.entities.update(response.entities);
                 await dispatch.repository.update({

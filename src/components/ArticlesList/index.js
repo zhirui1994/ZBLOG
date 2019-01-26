@@ -2,11 +2,11 @@ import React from 'react';
 import ArticleItem from '../ArticleItem';
 
 const ArticlesList = (props) => {
-    const { data } = props;
+    const { data, editable=false } = props;
     return (
         <div>
             {data.map(article => {
-                return <ArticleItem key={article.id} article={article} />
+                return <ArticleItem editable={editable} key={article.id} article={article} />
             })}
         </div>
     );

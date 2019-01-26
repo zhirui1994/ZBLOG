@@ -56,9 +56,14 @@ class EditorPage extends PureComponent {
     componentDidMount() {
         const { labelsList, milestonesList, dispatch } = this.props;
         const number = this.number;
-        if (!labelsList.length || !milestonesList.length) {
+        if (!labelsList.length || !milestonesList.length || number) {
             dispatch.repository.initEditor(number);
         }
+    }
+
+    componentWillUnmount() {
+        const { dispatch } = this.props;
+        dispatch.repository.closeCurrentIssue();
     }
 
     handleChange = (value) => {
@@ -176,6 +181,7 @@ class EditorPage extends PureComponent {
                                     onClick={this.handleRadioClick}
                                 >
                                     <input
+                                        readOnly
                                         type="radio"
                                         name="categories"
                                         value={milestone.number}
@@ -196,6 +202,7 @@ class EditorPage extends PureComponent {
                                     onClick={this.handleCheckboxClick}
                                 >
                                     <input
+                                        readOnly
                                         type="checkbox"
                                         value={label.name}
                                         name={`label-${label.name}`}

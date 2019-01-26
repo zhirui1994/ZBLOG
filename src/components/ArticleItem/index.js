@@ -5,7 +5,7 @@ import { isLight } from '../../utils/color';
 import styles from './style.module.scss';
 
 const ArticleItem = (props) => {
-    const { article } = props;
+    const { article, editable=false } = props;
     return (
         <article className={styles.article} key={article.id}>
             <NavLink to={`/article/${article.number}`}>
@@ -44,6 +44,13 @@ const ArticleItem = (props) => {
                     })}
                 </span>
             </p>
+            {editable ?
+                (<NavLink to={`/editor/${article.number}`} className={styles.editIcon}>
+                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </NavLink>)
+                :
+                null
+            }
         </article>
     );
 }

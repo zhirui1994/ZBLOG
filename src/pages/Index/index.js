@@ -5,6 +5,7 @@ import Loading from '../../components/Loading'
 import ArticlesList from '../../components/ArticlesList';
 import CategoriesNavigator from '../../components/CategoriesNavigator';
 import { getLoginAuthLink } from '../../services/github';
+import config from '../../commons/config';
 import styles from './style.module.scss';
 import logoUrl from './Blog_48px.png';
 
@@ -97,7 +98,7 @@ class IndexPage extends Component {
                         />
                     </header>
                     <main className={styles.articlesContainer}>
-                        <ArticlesList data={issuesList} />
+                        <ArticlesList editable={viewer.login === config.owner} data={issuesList} />
                     </main>
                 </div>
             </Loading>

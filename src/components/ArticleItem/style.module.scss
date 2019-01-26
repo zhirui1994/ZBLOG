@@ -1,12 +1,13 @@
 .article {
     padding: 5px 10px;
     border-bottom: 1px solid #eee;
+    position: relative;
     a {
         text-decoration: none;
-    }
-    &:hover {
-        .articleTitle {
-            color: rgb(9, 119, 245);
+        &:hover {
+            .articleTitle {
+                color: rgb(9, 119, 245);
+            }
         }
     }
     .articleTitle {
@@ -48,6 +49,20 @@
                     cursor: pointer;
                 }
             }
+        }
+    }
+    .editIcon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 18px;
+        text-decoration: none;
+        color: #000;
+        padding: 5px;
+        cursor: pointer;
+        &:hover {
+            color:  rgb(9, 119, 245);
+            font-size: 20px;
         }
     }
 }
