@@ -72,6 +72,13 @@ class EditorPage extends PureComponent {
         });
     }
 
+    handleTitleChange = (e) => {
+        const title = e.target.value;
+        this.setState({
+            title,
+        });
+    }
+
     handleRadioClick = (e) => {
         e.stopPropagation();
         let input;
@@ -163,7 +170,13 @@ class EditorPage extends PureComponent {
             <main>
                 <form>
                     <label className={styles.fileds} htmlFor="title">标题：
-                        <input className={styles.titleInput} defaultValue={this.state.title} ref={input => this.title = input} type="text" id="title" />
+                        <input
+                            type="text"
+                            id="title"
+                            className={styles.titleInput}
+                            defaultValue={this.state.title}
+                            onChange={this.handleTitleChange}
+                            />
                     </label>
                     <label className={classNames(styles.fileds, styles.editorContent)} htmlFor="editor">内容：
                         <MarkdownPreviewer
