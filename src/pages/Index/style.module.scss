@@ -10,6 +10,7 @@
         top: 0;
         .top {
             overflow: hidden;
+            height: 45px;
             * {
                 float: left;
             }
@@ -94,6 +95,21 @@
         }
         img {
             height: 100%;
+        }
+    }
+}
+
+@media(max-width: 800px) {
+    .container {
+        .header {
+            .right {
+                input[type=search] {
+                    display: none;
+                }
+            }
+        }
+        .articlesContainer {
+            width: 100%;
         }
     }
 }
