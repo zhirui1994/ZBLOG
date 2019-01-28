@@ -1,4 +1,4 @@
-import { userAuth, getViewer, addComment } from '../services/github';
+import { userAuth, getViewer, addComment, getAuthUser } from '../services/github';
 import { getSearchCode } from '../utils/urlSearchParser';
 import { USER_AUTH } from '../commons/const';
 
@@ -93,6 +93,29 @@ export default {
                     ...comment.entities,
                 })
                 typeof callback === 'function' && callback();
+            }
+        },
+        async getAuthUser(params, rootState) {
+            if (params && params.username && params.password) {
+                if (!rootState.user.loading) {
+                    await dispatch.user.update({
+                        loading: true,
+                    });
+                }
+                const user = await getAuthUser(params);
+                if (user) {
+                    await dispatch.user.update({
+                        auth: true,
+                        loading: false,
+                        viewer: user,
+                        username: params.username,
+                        password: params.password,
+                    })
+                } else {
+                    await dispatch.user.update({
+                        loading: false,
+                    });
+                }
             }
         }
     })

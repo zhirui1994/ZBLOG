@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
+import camelize from 'camelize';
 import config from '../commons/config';
 import { repository, comment as commentSchema, issue as issueSchema } from '../commons/schemas';
 import getToken from '../utils/getToken';
@@ -380,6 +381,21 @@ export async function editIssue(params) {
                 nodes: []
             };
             return normalize(issue, issueSchema);
+        }
+    })
+}
+
+export async function getAuthUser(params) {
+    return axios.get('https://api.github.com/user', {
+        auth: {
+            username: params.username,
+            password: params.password
+        },
+    }).then(response => {
+        const user = response && response.data;
+        if (user) {
+            user.id = user.node_id;
+            return camelize(user);
         }
     })
 }

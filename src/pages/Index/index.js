@@ -66,12 +66,28 @@ class IndexPage extends Component {
         });
     }
 
-    handleLoginOk = () => {
-
+    handleLoginOk = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const username = this.username.value;
+        const password = this.password.value;
+        if (username && password) {
+            const { dispatch } = this.props;
+            const params = {
+                username,
+                password,
+            }
+            dispatch.user.getAuthUser(params);
+            this.handleLoginCancel(e);
+        }
     }
 
-    handleLoginCancel = () => {
-
+    handleLoginCancel = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setState({
+            loginVisible: false,
+        });
     }
 
     render() {
@@ -128,8 +144,18 @@ class IndexPage extends Component {
                     onCancel={this.handleLoginCancel}
                 >
                     <form className={styles.loginForm}>
-                        <input className={styles.loginField} type="text" placeholder="请输入GitHub用户名" />
-                        <input className={styles.loginField} type="password" placeholder="请输入密码" />
+                        <input
+                            type="text"
+                            className={styles.loginField} 
+                            placeholder="请输入GitHub用户名"
+                            ref={username => this.username = username}
+                        />
+                        <input
+                            type="password"
+                            className={styles.loginField}
+                            placeholder="请输入密码"
+                            ref={password => this.password = password}
+                        />
                     </form>
                 </Dialog>
             </Loading>

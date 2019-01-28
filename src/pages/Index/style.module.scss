@@ -28,12 +28,14 @@
                     color: rgb(9, 119, 245);
                     float: left;
                     margin: 10px;
+                    cursor: pointer;
                 }
                 span {
                     text-decoration: none;
                     color: rgb(9, 119, 245);
                     float: left;
                     margin: 10px;
+                    cursor: pointer;
                 }
                 input[type=search] {
                     appearance: none;
@@ -103,14 +105,15 @@
             height: 100%;
         }
     }
-    .loginForm {
-        .loginField {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-        }
+}
+
+.loginForm {
+    .loginField {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
     }
 }
 
