@@ -29,6 +29,12 @@
                     float: left;
                     margin: 10px;
                 }
+                span {
+                    text-decoration: none;
+                    color: rgb(9, 119, 245);
+                    float: left;
+                    margin: 10px;
+                }
                 input[type=search] {
                     appearance: none;
                     float: left;
@@ -88,13 +94,22 @@
         margin: 5px;
         margin-bottom: 0;
         :global {
-            .fa.fa-circle-o-notch.fa-spin {
+            .fa.fa-spin {
                 margin-top: 3px;
                 font-size: 30px;
             }
         }
         img {
             height: 100%;
+        }
+    }
+    .loginForm {
+        .loginField {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
         }
     }
 }

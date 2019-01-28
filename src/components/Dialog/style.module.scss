@@ -1,0 +1,46 @@
+.dialogMask {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999999999;
+    display: flex;
+    flex-direction: row;
+    .dialogContent {
+        align-self: center;
+        width: 450px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 10px;
+        border: 1px solid #999;
+        border-radius: 5px;
+        :global {
+            header.dialog-header {
+                text-align: center;
+            }
+            footer.dialog-footer {
+                text-align: right;
+                button {
+                    padding: 5px 15px;
+                    border-radius: 5px;
+                    margin-right: 10px;
+                    outline: none;
+                    background-color: #269f42;
+                    background-image: linear-gradient(-180deg,#2fcb53,#269f42 90%);
+                    cursor: pointer;
+                    color: #fff;
+                    &:hover {
+                        background-color: #2b9444;
+                        background-image: linear-gradient(-180deg,#3fb65b,#2b9444 90%);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 800px) {
+    width: 100%;
+}

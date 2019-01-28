@@ -6,6 +6,7 @@ import ArticlesList from '../../components/ArticlesList';
 import CategoriesNavigator from '../../components/CategoriesNavigator';
 import { getLoginAuthLink } from '../../services/github';
 import config from '../../commons/config';
+import Dialog from '../../components/Dialog';
 import styles from './style.module.scss';
 import logoUrl from './Blog_48px.png';
 
@@ -23,6 +24,7 @@ const DEFAULT_ISSUES_OBJ = {
 class IndexPage extends Component {
     state = {
         currentCategory: null,
+        loginVisible: false,
     }
     componentDidMount() {
         const { dispatch } = this.props;
@@ -56,6 +58,22 @@ class IndexPage extends Component {
         }
     }
 
+    handleLogin = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setState({
+            loginVisible: true,
+        });
+    }
+
+    handleLoginOk = () => {
+
+    }
+
+    handleLoginCancel = () => {
+
+    }
+
     render() {
         const {
             viewer,
@@ -64,6 +82,8 @@ class IndexPage extends Component {
             isUserLoading,
             milestonesList,
         } = this.props;
+        const { loginVisible } = this.state;
+        const isPwa = window.location.href.indexOf('from=pwa') !== -1;
         return (
             <Loading loading={loading}>
                 <div className={styles.container}>
@@ -86,8 +106,8 @@ class IndexPage extends Component {
                                             <img src={viewer.avatarUrl} alt="This is commentor's avatar" />
                                         }
                                     </div>)
-                                    :
-                                    <a href={getLoginAuthLink()}>登陆</a>
+                                    : isPwa ? <span onClick={this.handleLogin}>登陆</span>
+                                    : <a href={getLoginAuthLink()}>登陆</a>
                                 }
                             </div>
                         </div>
@@ -101,6 +121,17 @@ class IndexPage extends Component {
                         <ArticlesList editable={viewer.login === config.owner} data={issuesList} />
                     </main>
                 </div>
+                <Dialog
+                    title="通过GitHub登陆"
+                    visible={loginVisible}
+                    onOk={this.handleLoginOk}
+                    onCancel={this.handleLoginCancel}
+                >
+                    <form className={styles.loginForm}>
+                        <input className={styles.loginField} type="text" placeholder="请输入GitHub用户名" />
+                        <input className={styles.loginField} type="password" placeholder="请输入密码" />
+                    </form>
+                </Dialog>
             </Loading>
         );
     }
