@@ -49,8 +49,8 @@ class MarkdownPreviewer extends Component {
         return (
             <div className={styles.markdownPreviewer}>
                 <ul className={styles.editController}>
-                    <li onClick={this.handleClickEditor} className={!isEdiotr ? styles.active : 'hidden'}>预览</li>
-                    <li onClick={this.handleClickPreview} className={isEdiotr ? styles.active : 'hidden'}>编辑</li>
+                    <li onClick={this.handleClickPreview} className={!isEdiotr ? styles.active : 'hidden'}>预览</li>
+                    <li onClick={this.handleClickEditor} className={isEdiotr ? styles.active : 'hidden'}>编辑</li>
                 </ul>
                 <textarea
                     id="editor"
