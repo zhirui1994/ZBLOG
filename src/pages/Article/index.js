@@ -57,13 +57,13 @@ class ArticlePage extends Component {
 
         return (
             <Fragment>
+                <div className={styles.langing}>
+                    <i onClick={this.handleBack} className="fa fa-chevron-left"></i>
+                    <p>
+                        文章详情
+                    </p>
+                </div>
                 <Loading loading={loading}>
-                    <div className={styles.langing}>
-                        <i onClick={this.handleBack} className="fa fa-chevron-left"></i>
-                        <p>
-                            文章详情
-                        </p>
-                    </div>
                     <div className={styles.container}>
                         <header>
                             <h1>{currentIssue.title}</h1>
