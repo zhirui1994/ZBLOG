@@ -158,87 +158,93 @@ class EditorPage extends PureComponent {
         }
     }
 
+    handleBack = () => {
+        this.props.history.goBack();
+    }
+
     render() {
         const { labelsList, milestonesList, loading } = this.props;
         const number = this.number;
         return (
-            <Loading loading={loading}>
-        <div className={styles.editorContainer}>
-            <header className={styles.header}>
-                <h2>文章编辑页</h2>
-            </header>
-            <main>
-                <form>
-                    <label className={styles.fileds} htmlFor="title">标题：
-                        <input
-                            type="text"
-                            id="title"
-                            className={styles.titleInput}
-                            defaultValue={this.state.title}
-                            onChange={this.handleTitleChange}
+            
+            <div className={styles.editorContainer}>
+                <header className={styles.header}>
+                    <i onClick={this.handleBack} className="fa fa-chevron-left"></i>
+                    <p>文章编辑</p>
+                </header>
+                <Loading loading={loading}>
+                    <main>
+                        <form>
+                            <label className={styles.fileds} htmlFor="title">标题：
+                                <input
+                                    type="text"
+                                    id="title"
+                                    className={styles.titleInput}
+                                    defaultValue={this.state.title}
+                                    onChange={this.handleTitleChange}
+                                    />
+                            </label>
+                            <label className={classNames(styles.fileds, styles.editorContent)} htmlFor="editor">内容：
+                                <MarkdownPreviewer
+                                    defaultValue={this.state.body}
+                                    onChange={this.handleChange}
+                                />
+                            </label>
+                            <label className={styles.fileds} htmlFor="milestone">
+                                分类：
+                                {milestonesList.map(milestone => {
+                                    return (
+                                        <label
+                                            key={milestone.id}
+                                            className={styles.checkLabel}
+                                            onClick={this.handleRadioClick}
+                                        >
+                                            <input
+                                                readOnly
+                                                type="radio"
+                                                name="categories"
+                                                value={milestone.number}
+                                                checked={this.state.milestone === milestone.number}
+                                            />
+                                            {milestone.title}
+                                        </label>
+                                    );
+                                })}
+                            </label>
+                            <label className={styles.fileds} htmlFor="labels">
+                                标签：
+                                {labelsList.map(label => {
+                                    return (
+                                        <label
+                                            key={label.id}
+                                            className={styles.checkLabel}
+                                            onClick={this.handleCheckboxClick}
+                                        >
+                                            <input
+                                                readOnly
+                                                type="checkbox"
+                                                value={label.name}
+                                                name={`label-${label.name}`}
+                                                checked={this.state.labels.indexOf(label.name) !== -1}
+                                            />
+                                            {label.name}
+                                        </label>
+                                    );
+                                })}
+                            </label>
+                            <input
+                                type="submit"
+                                value={number ? "修改" : "创建"}
+                                className={styles.submitButton}
+                                onClick={this.handleSubmit}
                             />
-                    </label>
-                    <label className={classNames(styles.fileds, styles.editorContent)} htmlFor="editor">内容：
-                        <MarkdownPreviewer
-                            defaultValue={this.state.body}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                    <label className={styles.fileds} htmlFor="milestone">
-                        分类：
-                        {milestonesList.map(milestone => {
-                            return (
-                                <label
-                                    key={milestone.id}
-                                    className={styles.checkLabel}
-                                    onClick={this.handleRadioClick}
-                                >
-                                    <input
-                                        readOnly
-                                        type="radio"
-                                        name="categories"
-                                        value={milestone.number}
-                                        checked={this.state.milestone === milestone.number}
-                                    />
-                                    {milestone.title}
-                                </label>
-                            );
-                        })}
-                    </label>
-                    <label className={styles.fileds} htmlFor="labels">
-                        标签：
-                        {labelsList.map(label => {
-                            return (
-                                <label
-                                    key={label.id}
-                                    className={styles.checkLabel}
-                                    onClick={this.handleCheckboxClick}
-                                >
-                                    <input
-                                        readOnly
-                                        type="checkbox"
-                                        value={label.name}
-                                        name={`label-${label.name}`}
-                                        checked={this.state.labels.indexOf(label.name) !== -1}
-                                    />
-                                    {label.name}
-                                </label>
-                            );
-                        })}
-                    </label>
-                    <input
-                        type="submit"
-                        value={number ? "修改" : "创建"}
-                        className={styles.submitButton}
-                        onClick={this.handleSubmit}
-                    />
-                </form>
-            </main>
-            <footer>
-                <p>Copyright ©{new Date().getFullYear()} Roy Zhi</p>
-            </footer>
-        </div>
-        </Loading>
+                        </form>
+                    </main>
+                </Loading>
+                <footer>
+                    <p>Copyright ©{new Date().getFullYear()} Roy Zhi</p>
+                </footer>
+            </div>
         );
     }
 }
