@@ -12,13 +12,9 @@ marked.setOptions({
 })
 
 class MarkdownPreviewer extends Component {
-    handleInput = (e) => {
-        const { onChange } = this.props;
-        const value = this.editor.value;
-        e.preventDefault();
-        typeof onChange === 'function' && onChange(value);
-        this.preview.innerHTML = marked(value);
-    }
+    state = {
+        isEdiotr: true,
+    };
 
     componentDidMount() {
         const { defaultValue } = this.props;
@@ -27,18 +23,45 @@ class MarkdownPreviewer extends Component {
         }
     }
 
+    handleInput = (e) => {
+        const { onChange } = this.props;
+        const value = this.editor.value;
+        e.preventDefault();
+        typeof onChange === 'function' && onChange(value);
+        this.preview.innerHTML = marked(value);
+    }
+
+    handleClickPreview = () => {
+        this.setState({
+            isEdiotr: false,
+        });
+    }
+
+    handleClickEditor = () => {
+        this.setState({
+            isEdiotr: true,
+        });
+    }
+
     render() {
         const { defaultValue } = this.props;
+        const { isEdiotr } = this.state;
         return (
             <div className={styles.markdownPreviewer}>
+                <ul className={styles.editController}>
+                    <li onClick={this.handleClickEditor} className={!isEdiotr ? styles.active : 'hidden'}>预览</li>
+                    <li onClick={this.handleClickPreview} className={isEdiotr ? styles.active : 'hidden'}>编辑</li>
+                </ul>
                 <textarea
                     id="editor"
                     spellCheck="false"
+                    className={isEdiotr ? styles.active : 'hidden'}
                     ref={textarea => this.editor = textarea}
                     onInput={this.handleInput}
                     defaultValue={defaultValue}
                 ></textarea>
                 <section
+                    className={!isEdiotr ? styles.active : 'hidden'}
                     id="preview"
                     ref={section => this.preview = section}
                 ></section>
