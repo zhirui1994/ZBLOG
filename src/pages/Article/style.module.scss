@@ -29,11 +29,8 @@
     }
 }
 
-.articleBody {
-    margin-top: 20px;
-}
-
 .issueCommentsContainer {
+    padding: 5px;
     border-top: 2px solid #e6ebf1;
     padding-top: 20px;
     margin: 20px 0 30px;
@@ -165,6 +162,23 @@
                         background-image: linear-gradient(-180deg,#3fb65b,#2b9444 90%);
                     }
                 }
+            }
+        }
+    }
+}
+@media(max-width: 800px) {
+    .container {
+        width: 100%;
+        header {
+            padding: 10px;
+            h1 {
+                font-size: 18px;
+                padding: 10px 0;
+            }
+        }
+        main {
+            .articleBody {
+                margin-top: -20px;
             }
         }
     }

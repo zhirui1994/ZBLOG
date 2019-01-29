@@ -136,7 +136,7 @@ class ArticlePage extends Component {
                                         <span className={classNames(styles.commentSwitch, styles.active)} >编辑</span>
                                         <span className={styles.commentSwitch} >预览</span>
                                         {(!viewer.id && !isUserLoading) && (
-                                            <span className={styles.commentorLogin} >通过GitHub<a href={getLoginAuthLink()}>登陆</a></span>
+                                            <span className={styles.commentorLogin} ><a href={getLoginAuthLink()}>登陆</a></span>
                                         )}
                                     </div>
                                     <div className={styles.createCommentInputContainer}>
