@@ -40,6 +40,11 @@ class ArticlePage extends Component {
         }
     }
 
+    handleBack = () => {
+        const { history } = this.props;
+        history.push('/');
+    }
+
     render() {
         const {
             loading,
@@ -55,6 +60,12 @@ class ArticlePage extends Component {
             <Loading loading={loading}>
                 <div className={styles.container}>
                     <header>
+                        <div className={styles.langing}>
+                            <i onClick={this.handleBack} className="fa fa-chevron-left"></i>
+                            <p>
+                                文章详情
+                            </p>
+                        </div>
                         <h1>{currentIssue.title}</h1>
                         <p className={styles.articleInfo}>
                             <span>
