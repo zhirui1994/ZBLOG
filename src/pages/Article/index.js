@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import { createSelector } from 'reselect';
@@ -57,111 +57,113 @@ class ArticlePage extends Component {
         } = this.props;
 
         return (
-            <Loading loading={loading}>
-                <div className={styles.container}>
-                    <header>
-                        <div className={styles.langing}>
-                            <i onClick={this.handleBack} className="fa fa-chevron-left"></i>
-                            <p>
-                                文章详情
-                            </p>
-                        </div>
-                        <h1>{currentIssue.title}</h1>
-                        <p className={styles.articleInfo}>
-                            <span>
-                                <i className="fa fa-calendar" aria-hidden="true"></i>
-                                {moment(currentIssue.createdAt).format('YYYY-MM-DD')}
-                            </span>
-                            <span>
-                                <i className="fa fa-th-list" aria-hidden="true"></i>
-                                <span className={styles.articleCategory}>
-                                    {currentIssue.milestone && milestonesMap[currentIssue.milestone].title}
-                                </span>
-                            </span>
-                            <span>
-                                <i className="fa fa-tags" aria-hidden="true"></i>
-                                {currentIssue.labels && currentIssue.labels.nodes.map(id => {
-                                    const label = labelsMap[id]
-                                    return (
-                                        <span
-                                            key={label.id}
-                                            className={styles.articleLabel}
-                                            style={{
-                                                background: `#${label.color}`,
-                                            }}
-                                        >
-                                            {label.name}
-                                        </span>
-                                    )
-                                })}
-                            </span>
+            <Fragment>
+                <Loading loading={loading}>
+                    <div className={styles.langing}>
+                        <i onClick={this.handleBack} className="fa fa-chevron-left"></i>
+                        <p>
+                            文章详情
                         </p>
-                    </header>
-                    <main>
-                        <article
-                            className={classNames(styles.articleBody, 'markdown-body')}
-                            dangerouslySetInnerHTML={{ __html: currentIssue.bodyHTML }}
-                        ></article>
-                        <div className={styles.issueCommentsContainer}>
-                            {currentIssue.comments && currentIssue.comments.nodes.map(id => {
-                                const comment = commentsMap[id];
-                                if (comment) {
-                                    const { author } = comment;
-                                    return (
-                                        <section key={comment.id} className={styles.issueComment}>
-                                            <a className={styles.commentorAvatar} href={author.url}>
-                                                <img src={author.avatarUrl} alt="This is commentor's avatar" />
-                                            </a>
-                                            <p className={styles.issueCommentHeader}>
-                                                <a href={author.url}><em>{author.login}</em></a>
-                                                <span>{moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-                                            </p>
-                                            <article
-                                                className={classNames(styles.issueCommentContent, 'markdown-body')}
-                                                dangerouslySetInnerHTML={{ __html: comment.bodyHTML}}
-                                            ></article>
-                                        </section>
-                                    );
-                                } else {
-                                    return null;
-                                }
-                            })}
-                            <section className={styles.createCommentContainer}>
-                                <div className={styles.createComment} >
-                                    {viewer.id ?
-                                        (<div className={styles.createCommentAvatar}>
-                                            <img src={viewer.avatarUrl} alt="This is commentor's avatar" />
-                                        </div>) :
-                                        (<a
-                                            className={styles.createCommentAvatar}
-                                            href={getLoginAuthLink()}
-                                        >
-                                            {isUserLoading ? 
-                                                <i className="fa fa-refresh fa-spin fa-3x fa-fw"></i>
-                                                :
-                                                <img src={githubIconUrl} alt="This is commentor's avatar" />
-                                            }
-                                        </a>)
+                    </div>
+                    <div className={styles.container}>
+                        <header>
+                            <h1>{currentIssue.title}</h1>
+                            <p className={styles.articleInfo}>
+                                <span>
+                                    <i className="fa fa-calendar" aria-hidden="true"></i>
+                                    {moment(currentIssue.createdAt).format('YYYY-MM-DD')}
+                                </span>
+                                <span>
+                                    <i className="fa fa-th-list" aria-hidden="true"></i>
+                                    <span className={styles.articleCategory}>
+                                        {currentIssue.milestone && milestonesMap[currentIssue.milestone].title}
+                                    </span>
+                                </span>
+                                <span>
+                                    <i className="fa fa-tags" aria-hidden="true"></i>
+                                    {currentIssue.labels && currentIssue.labels.nodes.map(id => {
+                                        const label = labelsMap[id]
+                                        return (
+                                            <span
+                                                key={label.id}
+                                                className={styles.articleLabel}
+                                                style={{
+                                                    background: `#${label.color}`,
+                                                }}
+                                            >
+                                                {label.name}
+                                            </span>
+                                        )
+                                    })}
+                                </span>
+                            </p>
+                        </header>
+                        <main>
+                            <article
+                                className={classNames(styles.articleBody, 'markdown-body')}
+                                dangerouslySetInnerHTML={{ __html: currentIssue.bodyHTML }}
+                            ></article>
+                            <div className={styles.issueCommentsContainer}>
+                                {currentIssue.comments && currentIssue.comments.nodes.map(id => {
+                                    const comment = commentsMap[id];
+                                    if (comment) {
+                                        const { author } = comment;
+                                        return (
+                                            <section key={comment.id} className={styles.issueComment}>
+                                                <a className={styles.commentorAvatar} href={author.url}>
+                                                    <img src={author.avatarUrl} alt="This is commentor's avatar" />
+                                                </a>
+                                                <p className={styles.issueCommentHeader}>
+                                                    <a href={author.url}><em>{author.login}</em></a>
+                                                    <span>{moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+                                                </p>
+                                                <article
+                                                    className={classNames(styles.issueCommentContent, 'markdown-body')}
+                                                    dangerouslySetInnerHTML={{ __html: comment.bodyHTML}}
+                                                ></article>
+                                            </section>
+                                        );
+                                    } else {
+                                        return null;
                                     }
-                                    <div className={styles.createCommentHeader}>
-                                        <span className={classNames(styles.commentSwitch, styles.active)} >编辑</span>
-                                        <span className={styles.commentSwitch} >预览</span>
-                                        {(!viewer.id && !isUserLoading) && (
-                                            <span className={styles.commentorLogin} ><a href={getLoginAuthLink()}>登陆</a></span>
-                                        )}
+                                })}
+                                <section className={styles.createCommentContainer}>
+                                    <div className={styles.createComment} >
+                                        {viewer.id ?
+                                            (<div className={styles.createCommentAvatar}>
+                                                <img src={viewer.avatarUrl} alt="This is commentor's avatar" />
+                                            </div>) :
+                                            (<a
+                                                className={styles.createCommentAvatar}
+                                                href={getLoginAuthLink()}
+                                            >
+                                                {isUserLoading ? 
+                                                    <i className="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                                                    :
+                                                    <img src={githubIconUrl} alt="This is commentor's avatar" />
+                                                }
+                                            </a>)
+                                        }
+                                        <div className={styles.createCommentHeader}>
+                                            <span className={classNames(styles.commentSwitch, styles.active)} >编辑</span>
+                                            <span className={styles.commentSwitch} >预览</span>
+                                            {(!viewer.id && !isUserLoading) && (
+                                                <span className={styles.commentorLogin} ><a href={getLoginAuthLink()}>登陆</a></span>
+                                            )}
+                                        </div>
+                                        <div className={styles.createCommentInputContainer}>
+                                            <textarea ref={textarea => this.comment = textarea} onInput={this.handleInput} className={styles.createCommentTextarea} placeholder="请编辑您的评论"></textarea>
+                                        </div>
+                                        <div className={styles.createCommentOperator}>
+                                            <button onClick={this.handleSubmitComment} >评论</button>
+                                        </div>
                                     </div>
-                                    <div className={styles.createCommentInputContainer}>
-                                        <textarea ref={textarea => this.comment = textarea} onInput={this.handleInput} className={styles.createCommentTextarea} placeholder="请编辑您的评论"></textarea>
-                                    </div>
-                                    <div className={styles.createCommentOperator}>
-                                        <button onClick={this.handleSubmitComment} >评论</button>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </main>
-                </div>
-            </Loading>
+                                </section>
+                            </div>
+                        </main>
+                    </div>
+                </Loading>
+            </Fragment>
         );
     }
 }
