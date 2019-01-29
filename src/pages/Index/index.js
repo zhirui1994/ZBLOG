@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import Loading from '../../components/Loading'
@@ -101,7 +101,7 @@ class IndexPage extends Component {
         const { loginVisible } = this.state;
         const isPwa = window.location.href.indexOf('from=pwa') !== -1;
         return (
-            <Loading loading={loading}>
+            <Fragment>
                 <div className={styles.container}>
                     <header className={styles.header}>
                         <div className={styles.top}>
@@ -133,9 +133,11 @@ class IndexPage extends Component {
                             onCategoryClick={this.handleCategoryClick}
                         />
                     </header>
-                    <main className={styles.articlesContainer}>
-                        <ArticlesList editable={viewer.login === config.owner} data={issuesList} />
-                    </main>
+                    <Loading loading={loading}>
+                        <main className={styles.articlesContainer}>
+                            <ArticlesList editable={viewer.login === config.owner} data={issuesList} />
+                        </main>
+                    </Loading>
                 </div>
                 <Dialog
                     title="通过GitHub登陆"
@@ -158,7 +160,7 @@ class IndexPage extends Component {
                         />
                     </form>
                 </Dialog>
-            </Loading>
+            </Fragment>
         );
     }
 }
