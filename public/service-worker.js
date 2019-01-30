@@ -5,6 +5,10 @@ const dataCacheName = 'ZBLOG-data-cache-0.0.1';
 
 self.__precacheManifest = [
     {
+        "revision": '0.0.1',
+        "url": "/"
+    },
+    {
       "revision": "4.7.0",
       "url": "/font-awesome-4.7.0/css/font-awesome.min.css"
     },
@@ -35,10 +39,6 @@ self.__precacheManifest = [
     {
       "reversion": "0.0.1",
       "url": "/favicon.ico"
-    },
-    {
-      "reversion": "0.0.1",
-      "url": "/apple-touch.icon.png"
     },
   ].concat(self.__precacheManifest || []);
 const precacheFiles = self.__precacheManifest.map(item => item.url);
@@ -72,6 +72,13 @@ self.addEventListener('fetch', function(e) {
                 return fetch(e.request).then(function(response) {
                     cache.put(e.request.url, response.clone());
                     return response;
+                }).catch(function(err) {
+                    console.log(err);
+                    caches.match(e.request.url).then(function(response) {
+                        if (response) {
+                            return response;
+                        }
+                    })
                 })
             })
         );
