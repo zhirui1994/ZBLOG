@@ -1,5 +1,6 @@
 .editorContainer {
-    height: 100%;
+    height: calc(100% - 35px);
+    overflow: hidden;
     user-select: none;
     .header {
         z-index: 9999;

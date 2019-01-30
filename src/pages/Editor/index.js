@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import MarkdownPreviewer from '../../components/MarkdownPreviewer';
 import Loading from '../../components/Loading';
+import { isPWA } from '../../utils/urlSearchParser';
 import styles from './style.module.scss';
 
 class EditorPage extends PureComponent {
@@ -241,7 +242,7 @@ class EditorPage extends PureComponent {
                         </form>
                     </main>
                 </Loading>
-                <footer>
+                <footer style={{display: isPWA() ? 'none' : ''}}>
                     <p>Copyright ©{new Date().getFullYear()} Roy Zhi</p>
                 </footer>
             </div>

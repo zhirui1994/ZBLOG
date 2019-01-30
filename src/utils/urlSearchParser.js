@@ -11,3 +11,7 @@ export function getSearchCode() {
         return '';
     }
 }
+
+export function isPWA() {
+    return window.location.href.indexOf('from=pwa') !== -1;
+}

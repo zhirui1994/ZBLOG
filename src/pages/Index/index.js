@@ -7,6 +7,7 @@ import CategoriesNavigator from '../../components/CategoriesNavigator';
 import { getLoginAuthLink } from '../../services/github';
 import config from '../../commons/config';
 import Dialog from '../../components/Dialog';
+import { isPWA } from '../../utils/urlSearchParser';
 import styles from './style.module.scss';
 import logoUrl from './Blog_48px.png';
 
@@ -99,7 +100,7 @@ class IndexPage extends Component {
             milestonesList,
         } = this.props;
         const { loginVisible } = this.state;
-        const isPwa = window.location.href.indexOf('from=pwa') !== -1;
+        const isPwa = isPWA();
         return (
             <Fragment>
                 <div className={styles.container}>
