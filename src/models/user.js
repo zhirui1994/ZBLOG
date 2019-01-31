@@ -1,41 +1,50 @@
 import { userAuth, getViewer, addComment, getAuthUser } from '../services/github';
 import { getSearchCode } from '../utils/urlSearchParser';
 import { USER_AUTH } from '../commons/const';
+import { saveState, getState } from '../utils/persist';
 
 const object = require('lodash/fp/object');
+const DEFAULT_STATE = {
+    loading: false,
+    auth: false,
+    accessToken: '',
+    scope: '',
+    tokenType: '',
+    viewer: {
+        email: '',
+        id: '',
+        login: '',
+        name: '',
+        url: '',
+        avatarUrl: ''
+    }
+};
+const NAME = 'user';
 
 export default {
-    name: 'user',
-    state: {
-        loading: false,
-        auth: false,
-        accessToken: '',
-        scope: '',
-        tokenType: '',
-        viewer: {
-            email: '',
-            id: '',
-            login: '',
-            name: '',
-            url: '',
-            avatarUrl: ''
-        }
-    },
+    name:NAME,
+    state: getState(NAME, DEFAULT_STATE),
     reducers: {
         update(state, payload) {
-            return object.merge(state, payload)
+            const newState = object.merge(state, payload);
+            saveState(NAME, newState);
+            return newState;
         },
     },
     effects: (dispatch) => ({
         async getAuthToken(_, rootState) {
+            const code = getSearchCode();
+            const userCache = localStorage.getItem(USER_AUTH);
+            if (!code && !userCache) {
+                return;
+            }
+
             if (!rootState.user.loading) {
                 await dispatch.user.update({
                     loading: true,
                 })
             }
 
-            const code = getSearchCode();
-            const userCache = localStorage.getItem(USER_AUTH);
             if (userCache ) {
                 const { 
                     access_token,

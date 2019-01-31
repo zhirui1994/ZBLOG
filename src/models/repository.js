@@ -1,21 +1,26 @@
 import * as githubServices from '../services/github'
+import { saveState, getState } from '../utils/persist';
 
 const object = require('lodash/fp/object');
+const DEFAULT_STATE = {
+    result: '',
+    loading: true,
+    searchParams: {
+        milestone: '*',
+        labels: [],
+        query: '', 
+    }
+};
+const NAME = 'repository';
 
 export default {
-    name: 'repository',
-    state: {
-        result: '',
-        loading: true,
-        searchParams: {
-            milestone: '*',
-            labels: [],
-            query: '', 
-        }
-    },
+    name: NAME,
+    state: getState(NAME, DEFAULT_STATE),
     reducers: {
         update(state, payload) {
-            return object.merge(state, payload);
+            const newState = object.merge(state, payload);
+            saveState(NAME, newState);
+            return newState;
         }
     },
     effects: (dispatch) => ({

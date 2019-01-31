@@ -22,6 +22,12 @@
                 margin-right: 10px;
             }
             .right  {
+                i:global(.fa.fa-pencil-square-o) {
+                    font-size: 24px;
+                    padding: 10px;
+                    cursor: pointer;
+                    padding-left: 20px
+                }
                 float: right;
                 a {
                     text-decoration: none;

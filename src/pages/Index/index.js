@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { withRouter } from 'react-router-dom';
 import Loading from '../../components/Loading'
 import ArticlesList from '../../components/ArticlesList';
 import CategoriesNavigator from '../../components/CategoriesNavigator';
@@ -107,14 +108,22 @@ class IndexPage extends Component {
                     <header className={styles.header}>
                         <div className={styles.top}>
                             <img alt="网站Logo" src={logoUrl} />
-                            <h1>Roy Zhi's Blog</h1>
+                            <h1>ZBLOG</h1>
                             <div className={styles.right}>
+
                                 <input
                                     type="search"
                                     ref={search => this.search = search}
                                     placeholder="请输入关键字搜索"
                                     onKeyDown={this.handleSearch}
                                 />
+                                {viewer.login === config.owner && (
+                                    <i
+                                        className="fa fa-pencil-square-o"
+                                        aria-hidden="true"
+                                        onClick={() => this.props.history.push('/editor')}
+                                    ></i>
+                                )}
                                 {(viewer.id || isUserLoading)?
                                     (<div className={styles.createCommentAvatar}>
                                         {isUserLoading ? 
@@ -221,4 +230,4 @@ const mapState = createSelector(
     }
 )
 
-export default connect(mapState)(IndexPage);
+export default connect(mapState)(withRouter(IndexPage));
